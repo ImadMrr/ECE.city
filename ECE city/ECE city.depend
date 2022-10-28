@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1666947483 source:c:\users\victo\onedrive\documents\github\ece-city\ece city\main.c
+	"header.h"
+
+1666902339 c:\users\victo\onedrive\documents\github\ece-city\ece city\header.h
+	<stdio.h>
+	<stdlib.h>
+

@@ -1,0 +1,74 @@
+rapport
+du 24 octobre au 21 novembre incluse
+20 novembre --> première documentation PowerPoint
+grille de 45 colonnes sur 35 lignes
+résolution écran : 1024x678
+1024x768  ==> cases de 20x20 pixels
+
+- Elément de route, canalisation, ligne électrique : 1 case
+- Elément de construction d’habitation : 3x3 cases
+- Elément de bâtiments prédéfinis (usines, châteaux d’eau, casernes...) : 4x6 cases
+Chargement --> fichier texte
+
+construction -> alimentée -> réseau eau + électricité
+réseau eau OU élec -> alimenté -> château d'eau ou centrale élec
+
+"Remarque : pour détecter les constructions « viables » et « non viables », on pourra se
+servir des algorithmes de connexité et de coloration vus en cours et TP "
+
+Boîte à outils : choisir les batiments et le niveau de visualisation
+
+Niveau :
+
+	-Route
+	-Réseau elec
+	-Réseau Eau
+
+	|- Un compteur temporel temps réel à la seconde apparait à l’écran et tourne jusqu’à
+la fin de la partie.
+	|- Un compteur « monnaie » affiche la somme initiale en jeu : 500 000 ECEflouz.
+Cette somme sera décrémentée par les achats et incrémentée par les impôts.
+	|- Un compteur « habitants » indique la somme totale d’habitant dans la ville.
+	|- Un compteur « capacité électrique » et « capacité en eau » indiquent la somme
+des capacités de chaque ressource.
+
+Terrain vagues : habitation de 15 sec de cycle de vie,
+	- Terrain vague (0 habitant) ou ruine en cas de régression (0 habitant);
+	- Cabane (10 habitants);
+	- Maison (50 habitants);
+	- Immeuble (100 habitants);
+	- Gratte-ciel (1000 habitants);
+Evolue que si il est allimenté par EAU ELEC et ROUTE.
+
+Prix : - Centrale : 100 000 ECE-flouz
+	 - Château d’eau : 100 000 ECE-flouz
+	 - Route : 10 ECE-flouz par unité de grille
+	 - Terrain vague : 1000 ECE-flouz
+
+Chaque habitant donne 10 a chaque fin de cycle (15sec).
+
+Ce que j'ai capté de ce qu'il faut faire : 
+
+Déjà il faut qu'il y est un compteur sans cesse.
+Le but c'est de faire grossir sa ville en achétant des terrains vagues, les allimenter afin que toutes les 15 secondes ils grossissent et amènent plus d'habitants.
+Chaque haitant amène 10 € toutes les 15 secondes.
+Si une habitations n'est pas allimentée, elle régresse jusqu'à devenir une ruîne.
+Tout le chargement du jeu que ce soit map ou quoi c'est tout en fichier text.
+Donc Hors bonus, il faut construire des habitations et des centrales de ressources c'est tout...
+Avec bonus il y a caserne de pompier (même principe de graphe avec un incendie aléatoire toutes les 15sec),
+divertissement, éducations etc, la on peut faire du sale.
+Le chargement, sauvegarde, pause du jeu tout ça c'est bonus. 
+
+Mode de jeu : - capitalisme		]
+		  - communisme 		] ça j'ai pas compris ...
+
+ 
+
+
+
+
+
+
+
+
+

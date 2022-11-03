@@ -2,9 +2,8 @@
 
 int main()
 {
-    printf("On va tuer ca\n");
-    printf("EH yo what'up\n");
-    printf("DESMOND BANE \n");
-    printf("Imad modif\n");
+    initialisation();
+    chargement_map();
     return 0;
 }
+END_OF_MAIN();

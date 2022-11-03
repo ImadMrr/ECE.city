@@ -2,8 +2,7 @@
 
 int main()
 {
-    initialisation();
-    chargement_map();
+    printf("Hello world!\n");
     return 0;
 }
 END_OF_MAIN();

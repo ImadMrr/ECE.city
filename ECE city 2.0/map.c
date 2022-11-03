@@ -60,4 +60,3 @@ void chargement_map()
     }
     printf("%d", tabcases[45][35].ligne);
 }
-

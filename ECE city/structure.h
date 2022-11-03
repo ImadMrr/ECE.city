@@ -13,4 +13,11 @@ typedef struct ville
 
 }t_ville;
 
+typedef struct cases_
+{
+    int ligne;
+    int colonne;
+    int cases;
+}t_cases;
+
 #endif // STRUCTURE_H_INCLUDED

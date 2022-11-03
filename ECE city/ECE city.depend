@@ -10,22 +10,30 @@
 1667489426 source:c:\users\victo\onedrive\documents\github\ece-city\ece city\affichage.c
 	"header.h"
 
-1667485433 source:c:\users\pauln\onedrive\bureau\github\ece-city\ece city\main.c
+1667490434 source:c:\users\pauln\onedrive\bureau\github\ece-city\ece city\main.c
 	"header.h"
 
-1667485407 c:\users\pauln\onedrive\bureau\github\ece-city\ece city\header.h
+1667490824 c:\users\pauln\onedrive\bureau\github\ece-city\ece city\header.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
+	<allegro.h>
 	"graphe.h"
 	"structure.h"
+	"affichage.h"
 
-1667486259 c:\users\pauln\onedrive\bureau\github\ece-city\ece city\graphe.h
+1667490410 c:\users\pauln\onedrive\bureau\github\ece-city\ece city\graphe.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1667486259 c:\users\pauln\onedrive\bureau\github\ece-city\ece city\structure.h
+1667490732 c:\users\pauln\onedrive\bureau\github\ece-city\ece city\structure.h
 
-1667485255 source:c:\users\pauln\onedrive\bureau\github\ece-city\ece city\graphe.c
+1667490410 source:c:\users\pauln\onedrive\bureau\github\ece-city\ece city\graphe.c
+	"header.h"
+
+1667490632 source:c:\users\pauln\onedrive\bureau\github\ece-city\ece city\affichage.c
+	"header.h"
+
+1667490824 c:\users\pauln\onedrive\bureau\github\ece-city\ece city\affichage.h
 

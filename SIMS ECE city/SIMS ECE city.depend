@@ -1,0 +1,30 @@
+# depslib dependency file v1.0
+1669140329 source:c:\users\victo\onedrive\documents\ing 2\informatique\sims ece city\construction.c
+	"header.h"
+
+1669139535 c:\users\victo\onedrive\documents\ing 2\informatique\sims ece city\header.h
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	<sys/stat.h>
+
+1669138720 source:c:\users\victo\onedrive\documents\ing 2\informatique\sims ece city\initialisation.c
+	"header.h"
+
+1669125169 source:c:\users\victo\onedrive\documents\ing 2\informatique\sims ece city\main.c
+	"header.h"
+
+1669140170 source:c:\users\victo\onedrive\documents\ing 2\informatique\sims ece city\map.c
+	"header.h"
+
+1669139535 source:c:\users\victo\onedrive\documents\ing 2\informatique\sims ece city\menu.c
+	"header.h"
+
+1669108465 source:c:\users\victo\onedrive\documents\ing 2\informatique\sims ece city\paint.c
+	"header.h"
+
+1669139033 source:c:\users\victo\onedrive\documents\ing 2\informatique\sims ece city\sauvegarde et chargement.c
+	"header.h"
+

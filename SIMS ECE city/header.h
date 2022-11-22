@@ -84,8 +84,10 @@ void suppression(t_ville* V, BITMAP* fond, time_t start);
 void construction_map(t_ville* V, BITMAP* fond, int refSlect, time_t start );
 void determination_indice(BITMAP* buffer, int* indiceligne, int* indicecolonne, int cliqueX, int cliqueY);
 void ecriture_case_maisons(t_cases** tabcases, int indiceligne, int indicecolonne,int type);
+void ecriture_case_centrale(t_cases** tabcases, int indiceligne, int indicecolonne, int type);
 
 void verif_placement_bat(t_cases** tabcases, int indiceligne,int indicecolonne, int* autor);
+void verif_placement_centrale(t_cases** tabcases, int indiceligne, int indicecolonne, int* autor);
 void info_bat(t_cases** tabcases,int clique_x,int clique_y, BITMAP* fond);
 
 t_cases** chargement_map();
@@ -117,6 +119,22 @@ t_ville* init_ville();
 t_ville* chargement_info_ville();
 
 void modification_niveau_bat(t_ville* V);
+
+
+///-----------------------------------------------------
+
+Graphe* CreerGraphe();
+t_ville * lire_graphe(t_ville* V);
+t_ville* init_ville();
+Graphe* init(Graphe* g, int dep_L, int dep_C);
+Graphe* CreerArete(Graphe* g,int s1_L,int s1_C,int s2_L,int s2_C);
+
+void djikstra(Graphe* g, int dep_L, int dep_C);
+
+void minimum(Graphe* g, int* imin_L, int* imin_C);
+void minimum_eau(t_ville* V, int* imin_L, int* imin_C);
+
+void dist_eau(t_ville* V);
 
 
 #endif // HEADER_H_INCLUDED

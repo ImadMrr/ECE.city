@@ -17,6 +17,8 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
     BITMAP* bat = NULL;
     BITMAP* bat2 = NULL;
 
+    BITMAP* chateau = NULL;
+
     BITMAP* route1 = NULL;
     BITMAP* route2 = NULL;
 
@@ -55,6 +57,8 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
         bat = load_bitmap("documents/bitmap/map/bat2.bmp", NULL);
         bat = lave_bitmap2(bat);
         bat2 = load_bitmap("documents/bitmap/map/bat1.bmp", NULL);
+        chateau = load_bitmap("documents/bitmap/map/chateau.bmp", NULL);
+        chateau = lave_bitmap2(chateau);
 
         route1 = load_bitmap("documents/bitmap/map/route1.bmp", NULL);
         route2 = load_bitmap("documents/bitmap/map/route2.bmp", NULL);
@@ -127,6 +131,10 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
                     draw_sprite(fond, bat2, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-80);
                 }
             }
+            if(V->tabcases[k][m].type == 5)
+            {
+                draw_sprite(fond, chateau,V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-110 );
+            }
         }
     }
     destroy_bitmap(ground);
@@ -140,6 +148,7 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
     destroy_bitmap(pause);
     destroy_bitmap(argent);
     destroy_bitmap(habitant);
+    destroy_bitmap(chateau);
 }
 
 void afficher_outil(t_cases* tablogo,t_cases** tabcasesMenu, BITMAP* fond)
@@ -150,6 +159,10 @@ void afficher_outil(t_cases* tablogo,t_cases** tabcasesMenu, BITMAP* fond)
     BITMAP* route2 = load_bitmap("documents/bitmap/map/route2.bmp", NULL);
 
     BITMAP* route1 = load_bitmap("documents/bitmap/map/route1.bmp", NULL);
+
+    BITMAP* logochat = load_bitmap("documents/bitmap/map/logochateau.bmp", NULL);
+    logochat = lave_bitmap2(logochat);
+
     BITMAP* croix = load_bitmap("documents/bitmap/map/croix.bmp", NULL);
 
     draw_sprite(fond,groundChoix, 20,40);
@@ -164,6 +177,8 @@ void afficher_outil(t_cases* tablogo,t_cases** tabcasesMenu, BITMAP* fond)
 
     ///Affichage du logo croix:
     draw_sprite(fond, croix, tablogo[9].colonne, tablogo[9].ligne);
+
+    draw_sprite(fond, logochat, tablogo[3].colonne, tablogo[3].ligne);
 
     destroy_bitmap(logoBat1);
     destroy_bitmap(route1);

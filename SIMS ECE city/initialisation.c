@@ -97,6 +97,11 @@ t_cases* initialisation_tabLogo()
     tablogo[2].colonne=40;
     tablogo[2].type=3;
 
+    ///chateau d'eau :
+    tablogo[3].ligne = 320;
+    tablogo[3].colonne = 40;
+    tablogo[3].type = 5;
+
 
     /// croix:
     tablogo[9].ligne=480;

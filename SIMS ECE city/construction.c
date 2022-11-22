@@ -26,6 +26,7 @@ void champPorte(BITMAP* buffer, int cliqueX, int cliqueY, BITMAP* fond, int refS
     int indiceligne = 0;
     int indicecolonne = 0;
     int autor = 1;
+    int lim = 0;
 
     determination_indice(buffer,&indiceligne,&indicecolonne,cliqueX,cliqueY);
 
@@ -52,6 +53,37 @@ void champPorte(BITMAP* buffer, int cliqueX, int cliqueY, BITMAP* fond, int refS
             pixel = getpixel(buffer, cliqueX+80, cliqueY+20);
         }
 
+    }
+    else if(refSelect == 5 || refSelect == 6)
+    {
+        if(indicecolonne%2 == 0)
+        {
+            lim = 20;
+        }
+        else
+        {
+            lim = 40;
+        }
+        if(cliqueX > 800)
+        {
+            pixel = getpixel(buffer, cliqueX+120, cliqueY);
+        }
+        if(cliqueY < 500)
+        {
+            pixel = getpixel(buffer, cliqueX, cliqueY-lim);
+        }
+        if(cliqueY > 500)
+        {
+            pixel = getpixel(buffer, cliqueX, cliqueY+lim);
+        }
+        if(cliqueX > 800 && cliqueY < 500)
+        {
+            pixel = getpixel(buffer, cliqueX+120, cliqueY-lim);
+        }
+        if(cliqueX > 800 && cliqueY > 500)
+        {
+            pixel = getpixel(buffer, cliqueX+120, cliqueY+lim);
+        }
     }
     else
     {
@@ -155,6 +187,10 @@ void suppression(t_ville* V, BITMAP* fond, time_t start)
                     {
                         V->argent = V->argent - 20;
                     }
+                    if(V->tabcases[indiceligne][indicecolonne].type == 5)
+                    {
+                        ecriture_case_centrale(V->tabcases, indiceligne, indicecolonne, 0);
+                    }
                     V->tabcases[indiceligne][indicecolonne].type = 0;
                 }
                 stop = 1;
@@ -169,6 +205,7 @@ void construction_map(t_ville* V, BITMAP* fond, int refSlect, time_t start )
 
     int indiceligne, indicecolonne;
     int stop = 0;
+    int lim = 0;
 
     time_t end;
     float temps;
@@ -176,6 +213,9 @@ void construction_map(t_ville* V, BITMAP* fond, int refSlect, time_t start )
     BITMAP* bat1 = load_bitmap("documents/bitmap/map/bat1.bmp", NULL);
     BITMAP* route2 = load_bitmap("documents/bitmap/map/route2.bmp", NULL);
     BITMAP* route1 = load_bitmap("documents/bitmap/map/route1.bmp", NULL);
+    BITMAP* chateau = load_bitmap("documents/bitmap/map/chateau.bmp", NULL);
+    chateau = lave_bitmap2(chateau);
+
     BITMAP* poubelle = load_bitmap("documents/bitmap/props/poubelle.bmp", NULL);
     poubelle = lave_bitmap(poubelle);
     poubelle = blanc_devient_noir(poubelle);
@@ -217,6 +257,11 @@ void construction_map(t_ville* V, BITMAP* fond, int refSlect, time_t start )
                 draw_sprite(buf, route1, mouse_x-10, mouse_y-10);
                 champPorte( buffer, mouse_x, mouse_y, buf,refSlect,V->tabcases );
             }
+            if(refSlect == 5)
+            {
+                draw_sprite(buf, chateau, mouse_x-10, mouse_y-116);
+                champPorte(buffer, mouse_x,mouse_y, buf,refSlect,V->tabcases);
+            }
             blit(buf, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
             clear_bitmap(buf);
 
@@ -252,6 +297,37 @@ void construction_map(t_ville* V, BITMAP* fond, int refSlect, time_t start )
                     }
 
                 }
+                else if(refSlect == 5 || refSlect == 6)
+                {
+                    if(indicecolonne%2 == 0)
+                    {
+                        lim = 20;
+                    }
+                    else
+                    {
+                        lim = 40;
+                    }
+                    if(mouse_x > 800)
+                    {
+                        pixel = getpixel(buffer, mouse_x+120, mouse_y);
+                    }
+                    if(mouse_y < 500)
+                    {
+                        pixel = getpixel(buffer, mouse_x, mouse_y-lim);
+                    }
+                    if(mouse_y > 500)
+                    {
+                        pixel = getpixel(buffer, mouse_x, mouse_y+lim);
+                    }
+                    if(mouse_x > 800 && mouse_y < 500)
+                    {
+                        pixel = getpixel(buffer, mouse_x+120, mouse_y-lim);
+                    }
+                    if(mouse_x > 800 && mouse_y > 500)
+                    {
+                        pixel = getpixel(buffer, mouse_x+120, mouse_y+lim);
+                    }
+                }
                 else
                 {
                     pixel = getpixel(buffer, mouse_x, mouse_y);
@@ -264,13 +340,17 @@ void construction_map(t_ville* V, BITMAP* fond, int refSlect, time_t start )
 
                 if(g == 200 && V->tabcases[indiceligne][indicecolonne].type == 0)
                 {
-                    if(refSlect != 4)
+                    if(refSlect == 2 || refSlect == 3)
                     {
                         autor = 1;
                     }
-                    else
+                    else if(refSlect == 4)
                     {
                         verif_placement_bat(V->tabcases,indiceligne,indicecolonne,&autor);
+                    }
+                    else
+                    {
+                        verif_placement_centrale(V->tabcases,indiceligne,indicecolonne, &autor);
                     }
                 }
             }
@@ -293,6 +373,11 @@ void construction_map(t_ville* V, BITMAP* fond, int refSlect, time_t start )
                 {
                     V->tabcases[indiceligne][indicecolonne].type = 3;
                     V->argent = V->argent - 10;
+                }
+                if(refSlect == 5)
+                {
+                    V->tabcases[indiceligne][indicecolonne].type = 5;
+                    ecriture_case_centrale(V->tabcases,indiceligne,indicecolonne,9);
                 }
 
                 stop = 1;
@@ -387,6 +472,116 @@ void verif_placement_bat(t_cases** tabcases, int indiceligne,int indicecolonne, 
     }
 }
 
+void verif_placement_centrale(t_cases** tabcases, int indiceligne, int indicecolonne, int* autor)
+{
+    if(tabcases[indiceligne][indicecolonne].type == 0)
+    {
+        if(tabcases[indiceligne][indicecolonne+1].type == 0 && tabcases[indiceligne][indicecolonne+2].type == 0 && tabcases[indiceligne][indicecolonne+3].type == 0)
+        {
+            if(indiceligne%2 == 0)
+            {
+                if(tabcases[indiceligne-1][indicecolonne].type == 0 && tabcases[indiceligne-1][indicecolonne+1].type == 0 && tabcases[indiceligne-1][indicecolonne+2].type == 0 && tabcases[indiceligne+1][indicecolonne].type == 0 && tabcases[indiceligne+1][indicecolonne+1].type == 0 && tabcases[indiceligne+1][indicecolonne+2].type == 0)
+                {
+                    if(tabcases[indiceligne-2][indicecolonne+1].type == 0 && tabcases[indiceligne-2][indicecolonne+2].type == 0 && tabcases[indiceligne+2][indicecolonne+1].type == 0 && tabcases[indiceligne+2][indicecolonne+2].type == 0 )
+                    {
+                        if(tabcases[indiceligne-3][indicecolonne+1].type == 0 && tabcases[indiceligne+3][indicecolonne+1].type == 0)
+                        {
+                            *autor = 1;
+                        }
+                        else
+                        {
+                            *autor = 0;
+                        }
+                    }
+                    else
+                    {
+                        *autor = 0;
+                    }
+                }
+                else
+                {
+                    *autor = 0;
+                }
+            }
+            else
+            {
+                if(tabcases[indiceligne-1][indicecolonne+1].type == 0 && tabcases[indiceligne-1][indicecolonne+2].type == 0 && tabcases[indiceligne-1][indicecolonne+3].type == 0 && tabcases[indiceligne+1][indicecolonne+1].type == 0 && tabcases[indiceligne+1][indicecolonne+2].type == 0 && tabcases[indiceligne+1][indicecolonne+3].type == 0)
+                {
+                    if(tabcases[indiceligne-2][indicecolonne+1].type == 0 && tabcases[indiceligne-2][indicecolonne+2].type == 0 && tabcases[indiceligne+2][indicecolonne+1].type == 0 && tabcases[indiceligne+2][indicecolonne+2].type == 0 )
+                    {
+                        if(tabcases[indiceligne-3][indicecolonne+2].type == 0 && tabcases[indiceligne+3][indicecolonne+2].type == 0)
+                        {
+                            *autor = 1;
+                        }
+                        else
+                        {
+                            *autor = 0;
+                        }
+                    }
+                    else
+                    {
+                        *autor = 0;
+                    }
+                }
+                else
+                {
+                    *autor = 0;
+                }
+            }
+        }
+        else
+        {
+            *autor = 0;
+        }
+    }
+    else
+    {
+        *autor = 0;
+    }
+}
+
+void ecriture_case_centrale(t_cases** tabcases, int indiceligne, int indicecolonne, int type)
+{
+    tabcases[indiceligne][indicecolonne+1].type = type;
+    tabcases[indiceligne][indicecolonne+2].type = type;
+    tabcases[indiceligne][indicecolonne+3].type = type;
+
+    if(indiceligne%2 == 0)
+    {
+        tabcases[indiceligne-1][indicecolonne].type = type;
+        tabcases[indiceligne-1][indicecolonne+1].type = type;
+        tabcases[indiceligne-1][indicecolonne+2].type = type;
+        tabcases[indiceligne+1][indicecolonne].type = type;
+        tabcases[indiceligne+1][indicecolonne+1].type = type;
+        tabcases[indiceligne+1][indicecolonne+2].type = type;
+
+        tabcases[indiceligne-2][indicecolonne+1].type = type;
+        tabcases[indiceligne-2][indicecolonne+2].type = type;
+        tabcases[indiceligne+2][indicecolonne+1].type = type;
+        tabcases[indiceligne+2][indicecolonne+2].type = type;
+
+        tabcases[indiceligne-3][indicecolonne+1].type = type;
+        tabcases[indiceligne+3][indicecolonne+1].type = type;
+    }
+    else
+    {
+        tabcases[indiceligne-1][indicecolonne+1].type = type;
+        tabcases[indiceligne-1][indicecolonne+2].type = type;
+        tabcases[indiceligne-1][indicecolonne+3].type = type;
+        tabcases[indiceligne+1][indicecolonne+1].type = type;
+        tabcases[indiceligne+1][indicecolonne+2].type = type;
+        tabcases[indiceligne+1][indicecolonne+3].type = type;
+
+        tabcases[indiceligne-2][indicecolonne+1].type = type;
+        tabcases[indiceligne-2][indicecolonne+2].type = type;
+        tabcases[indiceligne+2][indicecolonne+1].type = type;
+        tabcases[indiceligne+2][indicecolonne+2].type = type;
+
+        tabcases[indiceligne-3][indicecolonne+2].type = type;
+        tabcases[indiceligne+3][indicecolonne+2].type = type;
+    }
+}
+
 void info_bat(t_cases** tabcases,int clique_x,int clique_y, BITMAP* fond)
 {
     BITMAP* buffer = create_bitmap(SCREEN_W, SCREEN_H);
@@ -406,7 +601,7 @@ void info_bat(t_cases** tabcases,int clique_x,int clique_y, BITMAP* fond)
 
 void modification_niveau_bat(t_ville* V)
 {
-    for(int i=0; i<60;i++)
+    for(int i=0; i<60; i++)
     {
         for(int j = 0; j<26; j++)
         {

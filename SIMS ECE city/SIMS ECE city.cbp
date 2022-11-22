@@ -34,6 +34,15 @@
 		<Unit filename="construction.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="distribution.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="djikstra.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="graphe.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="header.h" />
 		<Unit filename="initialisation.c">
 			<Option compilerVar="CC" />

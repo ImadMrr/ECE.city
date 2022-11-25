@@ -72,3 +72,60 @@ void minimum_eau(t_ville* V, int* imin_L, int* imin_C)//on cherche la distance m
     }
 }
 
+void minimum_D(t_ville* V, int* imin_L, int* imin_C)//on cherche la distance minimum
+{
+    int lemin = INT_MAX;//le sommet qui est le plus près du sommet de départ
+    for(int L = 0; L<60; L++)//on parcourt tout le graphe
+    {
+        for(int C = 0; C<26; C++)
+        {
+            if(V->tabcases[L][C].type == 4 && V->circ_eau->pSommet[L][C]->distance_fix < lemin && V->tabcases[L][C].vu != 1)//si le sommet n'est pas marqué et que sa distance est inférieure a l'infini
+            {
+                lemin = V->circ_eau->pSommet[L][C]->distance_fix;//le sommet qui est le plus près du sommet de départ=i
+                *imin_L=L;
+                *imin_C=C;
+            }
+        }
+    }
+    if(lemin == INT_MAX)
+    {
+        *imin_C = -1;
+        *imin_L = -1;
+    }
+}
+
+void minimum_elec(t_ville* V, int* imin_L, int* imin_C)//on cherche la distance minimum
+{
+    *imin_L = 0;
+    *imin_C = 0;
+    int lemin = INT_MAX;//le sommet qui est le plus près du sommet de départ
+    for(int L = 0; L<60; L++)//on parcourt tout le graphe
+    {
+        for(int C = 0; C<26; C++)
+        {
+            if(V->tabcases[L][C].type == 6 && V->circ_eau->pSommet[L][C]->distance < lemin && V->tabcases[L][C].capa_elec != 0 && V->tabcases[L][C].vu == 0)//si le sommet n'est pas marqué et que sa distance est inférieure a l'infini
+            {
+                if(V->circ_eau->pSommet[L][C]->distance == V->circ_eau->pSommet[*imin_L][*imin_C]->distance)
+                {
+                    if(V->tabcases[L][C].nbr_hab > V->tabcases[*imin_L][*imin_C].nbr_hab)
+                    {
+                        lemin = V->circ_eau->pSommet[L][C]->distance;//le sommet qui est le plus près du sommet de départ=i
+                        *imin_L=L;
+                        *imin_C=C;
+                    }
+                }
+                else
+                {
+                    lemin = V->circ_eau->pSommet[L][C]->distance;//le sommet qui est le plus près du sommet de départ=i
+                    *imin_L=L;
+                    *imin_C=C;
+                }
+            }
+        }
+    }
+    if(lemin == INT_MAX)
+    {
+        *imin_C = -1;
+        *imin_L = -1;
+    }
+}

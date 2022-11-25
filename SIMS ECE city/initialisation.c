@@ -31,7 +31,8 @@ t_ville* init_ville()
     V->nbr_c_eau = 0;
     V->nbr_c_elec = 0;
     V->temps = 0;
-
+    V->num_chateau = 0;
+    V->num_centrale = 0;
     return V;
 }
 
@@ -67,7 +68,10 @@ t_cases** chargement_map()
             tabcases[i][j].nbr_hab = 0;
             tabcases[i][j].capa_eau = 0;
             tabcases[i][j].capa_elec = 0;
+            tabcases[i][j].besoin_eau = 0;
             tabcases[i][j].niveau = 0;
+            tabcases[i][j].num_chateau = 0;
+            tabcases[i][j].num_centrale = 0;
             colonne = colonne +40;
             fscanf(fichier, "%d", &tabcases[i][j].type);
         }
@@ -102,6 +106,10 @@ t_cases* initialisation_tabLogo()
     tablogo[3].colonne = 40;
     tablogo[3].type = 5;
 
+    ///centrale electrique
+    tablogo[4].ligne = 320;
+    tablogo[4].colonne = 110;
+    tablogo[4].type = 6;
 
     /// croix:
     tablogo[9].ligne=480;

@@ -58,22 +58,6 @@ Graphe* CreerArete(Graphe* g,int s1_L,int s1_C,int s2_L,int s2_C)
 t_ville * lire_graphe(t_ville* V)
 {
     V->circ_eau = CreerGraphe(); // créer le graphe d'ordre sommets
-    for(int L = 0; L < 60; L++)
-    {
-        for(int C = 0; C < 26; C++)
-        {
-            if(V->tabcases[L][C].type == 5) /// centrale eau
-            {
-                V->tabcases[L][C].capa_eau = 500;
-                V->nbr_c_eau += 1;
-            }
-            if(V->tabcases[L][C].type == 4) /// maison
-            {
-                V->tabcases[L][C].capa_eau = 0;
-                V->tabcases[L][C].nbr_hab = 200;
-            }
-        }
-    }
     for( int L = 0; L < 60; L++)
     {
         for(int C = 0; C < 26; C++)
@@ -143,6 +127,7 @@ Graphe* init(Graphe* g, int dep_L, int dep_C)//initialisation du graphe
             g->pSommet[L][C]->pred_C = -1;
             g->pSommet[L][C]->couleur = 0;//aucun sommet n'est marqué
             g->pSommet[L][C]->distance = INT_MAX;//les distances sont à "l'infini"
+            g->pSommet[L][C]->distance_fix = 0;
         }
     }
     g->pSommet[dep_L][dep_C]->distance = 0;//le sommet ini est à la distance 0 de lui-même

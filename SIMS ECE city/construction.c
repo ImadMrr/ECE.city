@@ -190,6 +190,14 @@ void suppression(t_ville* V, BITMAP* fond, time_t start)
                     if(V->tabcases[indiceligne][indicecolonne].type == 5)
                     {
                         ecriture_case_centrale(V->tabcases, indiceligne, indicecolonne, 0);
+                        V->capa_eau = V->capa_eau - V->tabcases[indiceligne][indicecolonne].capa_eau;
+                        V->tabcases[indiceligne][indicecolonne].capa_eau = 0;
+                    }
+                    if(V->tabcases[indiceligne][indicecolonne].type == 6)
+                    {
+                        ecriture_case_centrale(V->tabcases, indiceligne, indicecolonne, 0);
+                        V->capa_elec = V->capa_elec - V->tabcases[indiceligne][indicecolonne].capa_elec;
+                        V->tabcases[indiceligne][indicecolonne].capa_elec = 0;
                     }
                     V->tabcases[indiceligne][indicecolonne].type = 0;
                 }
@@ -258,6 +266,11 @@ void construction_map(t_ville* V, BITMAP* fond, int refSlect, time_t start )
                 champPorte( buffer, mouse_x, mouse_y, buf,refSlect,V->tabcases );
             }
             if(refSlect == 5)
+            {
+                draw_sprite(buf, chateau, mouse_x-10, mouse_y-116);
+                champPorte(buffer, mouse_x,mouse_y, buf,refSlect,V->tabcases);
+            }
+            if(refSlect == 6)
             {
                 draw_sprite(buf, chateau, mouse_x-10, mouse_y-116);
                 champPorte(buffer, mouse_x,mouse_y, buf,refSlect,V->tabcases);
@@ -340,9 +353,17 @@ void construction_map(t_ville* V, BITMAP* fond, int refSlect, time_t start )
 
                 if(g == 200 && V->tabcases[indiceligne][indicecolonne].type == 0)
                 {
-                    if(refSlect == 2 || refSlect == 3)
+                    if(  refSlect == 2 )
                     {
-                        autor = 1;
+                        V->tabcases[indiceligne][indicecolonne].type = 2;
+                        V->argent = V->argent - 10;
+                        draw_sprite(fond, route2,V->tabcases[indiceligne][indicecolonne].colonne,V->tabcases[indiceligne][indicecolonne].ligne );
+                    }
+                    if(  refSlect == 3 )
+                    {
+                        V->tabcases[indiceligne][indicecolonne].type = 3;
+                        V->argent = V->argent - 10;
+                        draw_sprite(fond,route1, V->tabcases[indiceligne][indicecolonne].colonne, V->tabcases[indiceligne][indicecolonne].ligne);
                     }
                     else if(refSlect == 4)
                     {
@@ -354,30 +375,35 @@ void construction_map(t_ville* V, BITMAP* fond, int refSlect, time_t start )
                     }
                 }
             }
-
             if( autor == 1 )
             {
                 if(  refSlect == 4 )
                 {
                     V->tabcases[indiceligne][indicecolonne].type = 4;
                     V->tabcases[indiceligne][indicecolonne].niveau = 0;
+                    time(&V->tabcases[indiceligne][indicecolonne].debut);
                     ecriture_case_maisons(V->tabcases,indiceligne,indicecolonne,9);
                     V->argent = V->argent - 1000;
-                }
-                if(  refSlect == 2 )
-                {
-                    V->tabcases[indiceligne][indicecolonne].type = 2;
-                    V->argent = V->argent - 10;
-                }
-                if(  refSlect == 3 )
-                {
-                    V->tabcases[indiceligne][indicecolonne].type = 3;
-                    V->argent = V->argent - 10;
                 }
                 if(refSlect == 5)
                 {
                     V->tabcases[indiceligne][indicecolonne].type = 5;
                     ecriture_case_centrale(V->tabcases,indiceligne,indicecolonne,9);
+                    V->tabcases[indiceligne][indicecolonne].capa_eau = 5000;
+                    V->capa_eau = V->capa_eau + V->tabcases[indiceligne][indicecolonne].capa_eau;
+                    V->argent = V->argent - 100000;
+                    V->tabcases[indiceligne][indicecolonne].num_chateau  = V->num_chateau + 1;
+                    V->num_chateau += 1;
+                }
+                if(refSlect == 6)
+                {
+                    V->tabcases[indiceligne][indicecolonne].type = 6;
+                    ecriture_case_centrale(V->tabcases,indiceligne,indicecolonne,9);
+                    V->tabcases[indiceligne][indicecolonne].capa_elec = 5000;
+                    V->capa_elec = V->capa_elec + V->tabcases[indiceligne][indicecolonne].capa_elec;
+                    V->argent = V->argent - 100000;
+                    V->tabcases[indiceligne][indicecolonne].num_centrale  = V->num_centrale + 1;
+                    V->num_centrale += 1;
                 }
 
                 stop = 1;
@@ -584,33 +610,21 @@ void ecriture_case_centrale(t_cases** tabcases, int indiceligne, int indicecolon
 
 void info_bat(t_cases** tabcases,int clique_x,int clique_y, BITMAP* fond)
 {
-    BITMAP* buffer = create_bitmap(SCREEN_W, SCREEN_H);
 
     int indiceligne,indicecolonne;
     if(mouse_b&2)
     {
+        BITMAP* buffer = create_bitmap(SCREEN_W, SCREEN_H);
         buffer = creation_buffer(tabcases);
         determination_indice(buffer,&indiceligne,&indicecolonne,clique_x,clique_y);
         if(tabcases[indiceligne][indicecolonne].type == 4)
         {
             textprintf_ex(fond, font, 200, 40,makecol(255,255,255),-1,"Habitant : %d", tabcases[indiceligne][indicecolonne].nbr_hab);
+            textprintf_ex(fond, font, 200, 50,makecol(255,255,255),-1,"Niveau : %d", tabcases[indiceligne][indicecolonne].niveau);
         }
-
+        destroy_bitmap(buffer);
     }
+
 }
 
-void modification_niveau_bat(t_ville* V)
-{
-    for(int i=0; i<60; i++)
-    {
-        for(int j = 0; j<26; j++)
-        {
-            if(V->tabcases[i][j].type == 4 && V->tabcases[i][j].niveau != 1) /// autre condition d'amelioration
-            {
-                V->tabcases[i][j].niveau = 1;
-                V->tabcases[i][j].nbr_hab = V->tabcases[i][j].nbr_hab + 1000;
-                V->habitants = V->habitants + V->tabcases[i][j].nbr_hab;
-            }
-        }
-    }
-}
+

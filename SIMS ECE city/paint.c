@@ -6,7 +6,7 @@ BITMAP* lave_bitmap(BITMAP* fond)
     int red, blue,green;
     for(int x=0; x<fond->w; x++)
     {
-        for(int y=0; y<fond->h ;y++)
+        for(int y=0; y<fond->h ; y++)
         {
             pixel = getpixel(fond, x,y);
             red = getr(pixel);
@@ -27,7 +27,7 @@ BITMAP* lave_bitmap2(BITMAP* fond)
     int red, blue,green;
     for(int x=0; x<fond->w; x++)
     {
-        for(int y=0; y<fond->h ;y++)
+        for(int y=0; y<fond->h ; y++)
         {
             pixel = getpixel(fond, x,y);
             red = getr(pixel);
@@ -48,7 +48,7 @@ BITMAP* blanc_devient_noir(BITMAP* fond)
     int red, blue,green;
     for(int x=0; x<fond->w; x++)
     {
-        for(int y=0; y<fond->h ;y++)
+        for(int y=0; y<fond->h ; y++)
         {
             pixel = getpixel(fond, x,y);
             red = getr(pixel);
@@ -174,4 +174,52 @@ BITMAP* creation_buffer(t_cases** tabcases)
         b = b +1;
     }
     return fond;
+}
+
+BITMAP* dessin_chemin_losange(BITMAP* losange, int couleur)
+{
+    for(int x = 0; x < losange->w; x++)
+    {
+        for(int y=0; y < losange->h; y++)
+        {
+            if(x == 10 || x == 11 || x == 28 || x == 29)
+            {
+                if(y >=4 && y<=15)
+                {
+                    putpixel(losange, x, y, couleur);
+                }
+            }
+
+            if(x == 12 || x == 13 || x == 26 || x == 27)
+            {
+                if(y>=3 && y <= 16)
+                {
+                    putpixel(losange, x, y, couleur);
+                }
+            }
+
+            if(x == 14 || x == 15 || x == 24 || x == 25)
+            {
+                if(y>=2 && y <=17)
+                {
+                    putpixel(losange, x, y, couleur);
+                }
+            }
+
+            if(x == 16 || x == 17 || x == 22 || x == 23)
+            {
+                if(y>=1 && y<=18)
+                {
+                    putpixel(losange, x, y, couleur);
+                }
+            }
+
+            if(x >= 18 && x <=21)
+            {
+                putpixel(losange, x, y, couleur);
+            }
+
+        }
+    }
+    return losange;
 }

@@ -185,7 +185,7 @@ BITMAP* dessin_chemin_losange(BITMAP* losange, int couleur);
 void minimum_D(t_ville* V, int* imin_L, int* imin_C);
 
 void dist_elec(t_ville* V);
-void minimum_elec(t_ville* V, int* imin_L, int* imin_C);
+void minimum_elec(t_ville* V, int* imin_L, int* imin_C, int deb_L, int deb_C);
 
 
 

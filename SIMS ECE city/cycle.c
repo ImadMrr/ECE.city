@@ -9,7 +9,7 @@ void modif_niveau_bat_communiste(t_ville* V, int i, int j)
     tab_hab[3] = 100;
     tab_hab[4] = 1000;
     int test = 0;
-    if(V->tabcases[i][j].type == 4 && V->tabcases[i][j].niveau < 4 /*&& V->tabcases[i][j].capa_eau == V->tabcases[i][j].nbr_hab*/ && V->tabcases[i][j].capa_elec == V->tabcases[i][j].nbr_hab) /// autre condition d'amelioration
+    if(V->tabcases[i][j].type == 4 && V->tabcases[i][j].niveau < 4 && V->tabcases[i][j].capa_eau == V->tabcases[i][j].nbr_hab && V->tabcases[i][j].capa_elec == V->tabcases[i][j].nbr_hab) /// autre condition d'amelioration
     {
         V->tabcases[i][j].niveau += 1;
         V->tabcases[i][j].nbr_hab = tab_hab[V->tabcases[i][j].niveau];
@@ -17,7 +17,7 @@ void modif_niveau_bat_communiste(t_ville* V, int i, int j)
         V->habitants = V->habitants + V->tabcases[i][j].nbr_hab - tab_hab[V->tabcases[i][j].niveau-1];
         test = 1;
     }
-    if(V->tabcases[i][j].type == 4 && V->tabcases[i][j].niveau > 0 && /*(V->tabcases[i][j].capa_eau < V->tabcases[i][j].nbr_hab ||*/ V->tabcases[i][j].capa_elec < V->tabcases[i][j].nbr_hab && test == 0)
+    if(V->tabcases[i][j].type == 4 && V->tabcases[i][j].niveau > 0 && (V->tabcases[i][j].capa_eau < V->tabcases[i][j].nbr_hab || V->tabcases[i][j].capa_elec < V->tabcases[i][j].nbr_hab) && test == 0)
     {
         V->tabcases[i][j].niveau -= 1;
         V->tabcases[i][j].nbr_hab = tab_hab[V->tabcases[i][j].niveau];

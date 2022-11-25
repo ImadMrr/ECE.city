@@ -182,9 +182,33 @@ BITMAP* dessin_chemin_losange(BITMAP* losange, int couleur)
     {
         for(int y=0; y < losange->h; y++)
         {
+            if(x == 4 || x == 5 || x == 34 || x == 35)
+            {
+                if(y >= 9 && y<= 11)
+                {
+                    putpixel(losange, x, y, couleur);
+                }
+            }
+
+            if(x == 6 || x == 7 || x == 32 || x == 33)
+            {
+                if(y>= 8 && y <= 12)
+                {
+                    putpixel(losange, x, y, couleur);
+                }
+            }
+
+            if(x == 8 || x == 9 || x == 30 || x == 31)
+            {
+                if(y>=7 && y<=13)
+                {
+                    putpixel(losange, x, y, couleur);
+                }
+            }
+
             if(x == 10 || x == 11 || x == 28 || x == 29)
             {
-                if(y >=4 && y<=15)
+                if(y >=6 && y<=14)
                 {
                     putpixel(losange, x, y, couleur);
                 }
@@ -192,7 +216,7 @@ BITMAP* dessin_chemin_losange(BITMAP* losange, int couleur)
 
             if(x == 12 || x == 13 || x == 26 || x == 27)
             {
-                if(y>=3 && y <= 16)
+                if(y>=5 && y <= 15)
                 {
                     putpixel(losange, x, y, couleur);
                 }
@@ -200,7 +224,7 @@ BITMAP* dessin_chemin_losange(BITMAP* losange, int couleur)
 
             if(x == 14 || x == 15 || x == 24 || x == 25)
             {
-                if(y>=2 && y <=17)
+                if(y>=4 && y <=16)
                 {
                     putpixel(losange, x, y, couleur);
                 }
@@ -208,7 +232,7 @@ BITMAP* dessin_chemin_losange(BITMAP* losange, int couleur)
 
             if(x == 16 || x == 17 || x == 22 || x == 23)
             {
-                if(y>=1 && y<=18)
+                if(y>=3 && y<=17)
                 {
                     putpixel(losange, x, y, couleur);
                 }
@@ -216,7 +240,10 @@ BITMAP* dessin_chemin_losange(BITMAP* losange, int couleur)
 
             if(x >= 18 && x <=21)
             {
-                putpixel(losange, x, y, couleur);
+                if(y >= 2 && y <= 18)
+                {
+                    putpixel(losange, x, y, couleur);
+                }
             }
 
         }

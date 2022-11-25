@@ -76,6 +76,7 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
     {
         ground = load_bitmap("documents/bitmap/map/niv-1.bmp", NULL);
         route1 = load_bitmap("documents/bitmap/map/eauniv1.bmp", NULL);
+        route1 = dessin_chemin_losange(route1, makecol(0,112,113));
         route2 = load_bitmap("documents/bitmap/map/eauniv1.bmp", NULL);
         bat = load_bitmap("documents/bitmap/map/batsous-sol.bmp", NULL);
         bat2 = load_bitmap("documents/bitmap/map/batsous-sol.bmp", NULL);
@@ -281,7 +282,7 @@ void maps(int type)  /// 0 : nouvelle partie | 1 : partie charge
             affichage_info_distribution_elec(V, mouse_x,mouse_y,fond);
         }
         re_initialisation(V);
-       // dist_eau(V);
+        dist_eau(V);
         dist_elec(V);
         blit(fond,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         clear_bitmap(fond);

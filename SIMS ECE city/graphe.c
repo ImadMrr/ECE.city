@@ -127,7 +127,6 @@ Graphe* init(Graphe* g, int dep_L, int dep_C)//initialisation du graphe
             g->pSommet[L][C]->pred_C = -1;
             g->pSommet[L][C]->couleur = 0;//aucun sommet n'est marqué
             g->pSommet[L][C]->distance = INT_MAX;//les distances sont à "l'infini"
-            g->pSommet[L][C]->distance_fix = 0;
         }
     }
     g->pSommet[dep_L][dep_C]->distance = 0;//le sommet ini est à la distance 0 de lui-même

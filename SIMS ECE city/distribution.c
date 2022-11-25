@@ -69,7 +69,7 @@ void dist_elec(t_ville* V)
             {
                 V->tabcases[L][C].vu = 0;
                 djikstra(V->circ_eau, L,C);
-                minimum_elec(V, &arr_L, &arr_C);
+                minimum_elec(V, &arr_L, &arr_C, L, C);
                 if(arr_L != -1)
                 {
                     V->circ_eau->pSommet[L][C]->distance_fix = V->circ_eau->pSommet[arr_L][arr_C]->distance;
@@ -77,7 +77,7 @@ void dist_elec(t_ville* V)
             }
         }
     }
-    while(deb_L != -1)
+    do
     {
         minimum_D(V, &deb_L, &deb_C);
         if(deb_L != -1)
@@ -85,30 +85,25 @@ void dist_elec(t_ville* V)
             djikstra(V->circ_eau, deb_L,deb_C);
             while(V->tabcases[deb_L][deb_C].capa_elec != V->tabcases[deb_L][deb_C].nbr_hab && arr_L != -1)
             {
-                minimum_elec(V, &arr_L, &arr_C);
+                minimum_elec(V, &arr_L, &arr_C, deb_L, deb_C);
                 if(arr_L != -1)
                 {
-                    if(V->tabcases[arr_L][arr_C].capa_elec - V->tabcases[deb_L][deb_C].nbr_hab > 0)
-                    {
-                        V->tabcases[deb_L][deb_C].capa_elec = V->tabcases[deb_L][deb_C].nbr_hab;
-                        V->tabcases[arr_L][arr_C].capa_elec -= V->tabcases[deb_L][deb_C].nbr_hab;
-                        V->tabcases[deb_L][deb_C].tabelec.valeur = V->tabcases[deb_L][deb_C].nbr_hab;
-                        V->tabcases[deb_L][deb_C].tabelec.source_L = arr_L;
-                        V->tabcases[deb_L][deb_C].tabelec.source_C = arr_C;
-                        V->tabcases[deb_L][deb_C].tabelec.valid = 1;
-                    }
-                    else
-                    {
-                        V->tabcases[arr_L][arr_C].vu = 1;
-                    }
-                    V->capa_elec = (V->num_centrale * 5000) - V->habitants; /// Calcul de la capacite restante de la ville
+                    V->tabcases[deb_L][deb_C].capa_elec = V->tabcases[deb_L][deb_C].nbr_hab;
+                    V->tabcases[arr_L][arr_C].capa_elec -= V->tabcases[deb_L][deb_C].nbr_hab;
+                    V->tabcases[deb_L][deb_C].tabelec.valeur = V->tabcases[deb_L][deb_C].nbr_hab;
+                    V->tabcases[deb_L][deb_C].tabelec.source_L = arr_L;
+                    V->tabcases[deb_L][deb_C].tabelec.source_C = arr_C;
+                    V->tabcases[deb_L][deb_C].tabelec.valid = 1;
                 }
+
+                V->capa_eau = (V->num_chateau * 5000) - V->habitants; /// Calcul de la capacite restante de la ville
+
             }
-             V->tabcases[deb_L][deb_C].vu = 1;
+            V->tabcases[deb_L][deb_C].vu = 1;
         }
     }
+    while(deb_L != -1);
 }
-
 
 
 
@@ -118,7 +113,7 @@ void re_initialisation(t_ville* V)
     {
         for(int j=0; j<26; j++)
         {
-            for(int u = 0; u<15 ;u++)
+            for(int u = 0; u<15 ; u++)
             {
                 V->tabcases[i][j].tabeau[u].valeur = 0;
             }
@@ -172,11 +167,17 @@ void affichage_info_distribution_elec(t_ville* V,int cliqueX,int  cliqueY, BITMA
 {
     int indice_ligne = 0;
     int indice_colonne = 0;
+    int compteur = 0;
     if(mouse_b&2)
     {
         BITMAP* buffer = create_bitmap(SCREEN_W,SCREEN_H);
         buffer = creation_buffer(V->tabcases);
         determination_indice(buffer, &indice_ligne,&indice_colonne,cliqueX,cliqueY);
+        if(V->tabcases[indice_ligne][indice_colonne].tabelec.valid == 1)
+        {
+            textprintf_ex(fond, font, 200, 35 + compteur, makecol(255,255,255), -1, "Provenance : centrale electrique numero %d - quantite : %d/%d",V->tabcases[V->tabcases[indice_ligne][indice_colonne].tabelec.source_L][V->tabcases[indice_ligne][indice_colonne].tabelec.source_C].num_centrale,V->tabcases[indice_ligne][indice_colonne].tabelec.valeur, V->tabcases[indice_ligne][indice_colonne].nbr_hab);
+            compteur += 10;
+        }
         if(V->tabcases[indice_ligne][indice_colonne].type == 6)
         {
             textprintf_ex(fond, font, 200, 40, makecol(255,255,255), -1, "Centrale electrique numero %d", V->tabcases[indice_ligne][indice_colonne].num_centrale);

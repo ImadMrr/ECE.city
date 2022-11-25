@@ -6,6 +6,7 @@
 #include <time.h>
 #include <synchapi.h>
 #include <sys/stat.h>
+#include <limits.h>
 
 /* Structure d'un arc*/
 struct Arc
@@ -29,6 +30,7 @@ typedef struct ssommet
     int pred_L;
     int pred_C;
     int distance;
+    int distance_fix;
 }t_sommet;
 
 /* Alias d'un Graphe */
@@ -38,15 +40,34 @@ typedef struct Graphe
     t_sommet*** pSommet;
 }Graphe;
 
+typedef struct provennance
+{
+    int valeur;
+    int source_L;
+    int source_C;
+    int valid;
+}t_prov;
+
 typedef struct cases
 {
     int ligne;
     int colonne;
     int type;
+    time_t debut;
+    time_t fin;
+    int temps;
     int niveau;
     int nbr_hab;
+    int besoin_eau;
+    int besoin_elec;
     int capa_eau;
+    int capa_eau_init;
     int capa_elec;
+    t_prov tabeau[15];
+    t_prov tabelec;
+    int num_chateau;
+    int num_centrale;
+    int vu;
 }t_cases;
 
 typedef struct ville
@@ -56,6 +77,7 @@ typedef struct ville
     int argent;
     int habitants;
     int capa_eau;
+    int capa_eau_init;
     int capa_elec;
     Graphe* circ_eau;
     Graphe* circ_elec;
@@ -63,9 +85,16 @@ typedef struct ville
     int nbr_c_eau;
     int nbr_c_elec;
     float temps;
+    int num_chateau;
+    int num_centrale;
 }t_ville;
 
-
+// structure maillon, utile pour notre liste dynamique
+typedef struct maillon
+{
+    int nbr;
+    struct maillon* next;
+}t_maillon;
 
 void initialisation();
 
@@ -118,7 +147,8 @@ char* saisie_chargement();
 t_ville* init_ville();
 t_ville* chargement_info_ville();
 
-void modification_niveau_bat(t_ville* V);
+void modif_niveau_bat_communiste(t_ville* V, int i, int j);
+void modif_niveau_bat_capitaliste(t_ville* V, int i, int j);
 
 
 ///-----------------------------------------------------
@@ -135,6 +165,28 @@ void minimum(Graphe* g, int* imin_L, int* imin_C);
 void minimum_eau(t_ville* V, int* imin_L, int* imin_C);
 
 void dist_eau(t_ville* V);
+void re_initialisation(t_ville* V);
+
+void fin_de_cycle(t_ville* V);
+
+void affichage_info_distribution_eau(t_ville* V, int cliqueX, int cliqueY, BITMAP* fond);
+void affichage_info_distribution_elec(t_ville* V,int cliqueX,int  cliqueY, BITMAP* fond);
+
+int BFS(t_ville* V,Graphe* ungraph, int dep_L, int dep_C);
+t_maillon* creerMaillon(int x);
+t_maillon* creerFileDyna(int x);
+Graphe* marquage(Graphe* ungraph, int smmtL, int smmtC);
+t_maillon* ajoutFileDyna(t_maillon* UneFile, t_maillon* Nouv);
+t_maillon* supFileDyna(t_maillon* UneFile, int* depile);
+int testFileDynaVide(t_maillon* UneFile);
+
+BITMAP* dessin_chemin_losange(BITMAP* losange, int couleur);
+
+void minimum_D(t_ville* V, int* imin_L, int* imin_C);
+
+void dist_elec(t_ville* V);
+void minimum_elec(t_ville* V, int* imin_L, int* imin_C);
+
 
 
 #endif // HEADER_H_INCLUDED

@@ -78,6 +78,10 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
         route1 = load_bitmap("documents/bitmap/map/eauniv1.bmp", NULL);
         route2 = load_bitmap("documents/bitmap/map/eauniv1.bmp", NULL);
         bat = load_bitmap("documents/bitmap/map/batsous-sol.bmp", NULL);
+        bat2 = load_bitmap("documents/bitmap/map/batsous-sol.bmp", NULL);
+
+        chateau = load_bitmap("documents/bitmap/map/chateau.bmp", NULL);
+        chateau = lave_bitmap2(chateau);
 
         niv2 = load_bitmap("documents/bitmap/map/affiche2niv1.bmp", NULL);
 
@@ -91,6 +95,10 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
         route1 = load_bitmap("documents/bitmap/map/elec.bmp", NULL);
         route2 = load_bitmap("documents/bitmap/map/elec.bmp", NULL);
         bat = load_bitmap("documents/bitmap/map/batsous-sol.bmp", NULL);
+        bat2 = load_bitmap("documents/bitmap/map/batsous-sol.bmp", NULL);
+
+        chateau = load_bitmap("documents/bitmap/map/chateau.bmp", NULL);
+        chateau = lave_bitmap2(chateau);
     }
 
 
@@ -131,7 +139,7 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
                     draw_sprite(fond, bat2, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-80);
                 }
             }
-            if(V->tabcases[k][m].type == 5)
+            if(V->tabcases[k][m].type == 5 || V->tabcases[k][m].type == 6)
             {
                 draw_sprite(fond, chateau,V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-110 );
             }
@@ -180,6 +188,9 @@ void afficher_outil(t_cases* tablogo,t_cases** tabcasesMenu, BITMAP* fond)
 
     draw_sprite(fond, logochat, tablogo[3].colonne, tablogo[3].ligne);
 
+    draw_sprite(fond, logochat, tablogo[4].colonne, tablogo[4].ligne);
+
+
     destroy_bitmap(logoBat1);
     destroy_bitmap(route1);
     destroy_bitmap(route2);
@@ -208,21 +219,19 @@ void maps(int type)  /// 0 : nouvelle partie | 1 : partie charge
 
     int niveau = 0;
     time_t start,end;
-    time_t debut_cycle,fin_cycle;
     float temps;
-    float temps_cycle;
     float temps_pause = 0;
     time(&start);
     int refSelect = -1;
 
     int fin = 0;
-    time(&debut_cycle);
     while(fin == 0)
     {
         refSelect = -1;
         refSelect = cliqueChoixMenu(mouse_x,mouse_y,tablogo);
         time(&end);
 
+        fin_de_cycle(V);
 
         temps = difftime(end, start ) + V->temps - temps_pause;
 
@@ -246,29 +255,36 @@ void maps(int type)  /// 0 : nouvelle partie | 1 : partie charge
         {
             niveau = -2;
         }
-        info_bat(V->tabcases,mouse_x,mouse_y,fond);
         afficher_map(V,fond,niveau);
-        if(refSelect != -1 && niveau == 0)
+        if(niveau == 0)
         {
-            if(refSelect != 10)
+            info_bat(V->tabcases,mouse_x,mouse_y,fond);
+            if(refSelect != -1)
             {
-                construction_map(V,fond, refSelect, start);
-            }
-            else
-            {
-                suppression(V,fond, start);
+                if(refSelect != 10)
+                {
+                    construction_map(V,fond, refSelect, start);
+                }
+                else
+                {
+                    suppression(V,fond, start);
+                }
+                V = lire_graphe(V);
             }
         }
+        if(niveau == -1)
+        {
+            affichage_info_distribution_eau(V, mouse_x, mouse_y, fond);
+        }
+        if(niveau == -2)
+        {
+            affichage_info_distribution_elec(V, mouse_x,mouse_y,fond);
+        }
+        re_initialisation(V);
+       // dist_eau(V);
+        dist_elec(V);
         blit(fond,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         clear_bitmap(fond);
-
-        time(&fin_cycle);
-        temps_cycle = difftime(fin_cycle, debut_cycle);
-        if(temps_cycle == 15)
-        {
-            modification_niveau_bat(V);
-            time(&debut_cycle);
-        }
     }
     destroy_bitmap(fond2);
     destroy_bitmap(fond);

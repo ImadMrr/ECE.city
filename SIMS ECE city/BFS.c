@@ -17,7 +17,7 @@ int BFS(t_ville* V,Graphe* ungraph, int dep_L, int dep_C)
         pArc temp = ungraph->pSommet[departL][departC]->arc;
         while(temp != NULL)
         {
-            if(V->tabcases[temp->ligne][temp->colonne].type == 2 || V->tabcases[temp->ligne][temp->colonne].type == 3)
+            if(V->tabcases[temp->ligne][temp->colonne].type == 2 || V->tabcases[temp->ligne][temp->colonne].type == 3 || V->tabcases[temp->ligne][temp->colonne].type == 8)
             {
                 connexe = 1;
             }

@@ -75,6 +75,8 @@ typedef struct cases
     int protec;
     int feu;
     int ruine;
+    int connex;
+    int tchek;
 }t_cases;
 
 typedef struct ville
@@ -174,7 +176,7 @@ void minimum_eau(t_ville* V, int* imin_L, int* imin_C);
 void dist_eau(t_ville* V);
 void re_initialisation(t_ville* V);
 
-void fin_de_cycle(t_ville* V);
+void fin_de_cycle(t_ville* V, BITMAP* fond);
 
 void affichage_info_distribution_eau(t_ville* V, int cliqueX, int cliqueY, BITMAP* fond);
 void affichage_info_distribution_elec(t_ville* V,int cliqueX,int  cliqueY, BITMAP* fond);
@@ -201,7 +203,9 @@ void coloration_chemin_eau(t_ville* V, int arriveeL, int arriveeC);
 void coloration_chemin_elec(t_ville* V, int arriveeL, int arriveeC);
 
 void minimum_pomp(t_ville* V, int* imin_L, int* imin_C);
-void pompier(t_ville* V, int L, int C);
-void aleatoire_feu(t_ville* V, int L, int C);
+void pompier(t_ville* V);
+void aleatoire_feu(t_ville* V);
+void cycle_feu(float temps, t_ville* V);
+void controle_feu(t_ville* V);
 
 #endif // HEADER_H_INCLUDED

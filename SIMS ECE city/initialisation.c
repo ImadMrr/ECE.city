@@ -99,35 +99,30 @@ t_cases* initialisation_tabLogo()
     tablogo[0].colonne=65;
     tablogo[0].type=4;
 
-    ///route 2:
+    /// route 3:
     tablogo[1].ligne=280;
-    tablogo[1].colonne=110;
-    tablogo[1].type=2;
-
-    /// route:
-    tablogo[2].ligne=280;
-    tablogo[2].colonne=40;
-    tablogo[2].type=3;
+    tablogo[1].colonne=75;
+    tablogo[1].type=8;
 
     ///chateau d'eau :
-    tablogo[3].ligne = 345;
-    tablogo[3].colonne = 40;
-    tablogo[3].type = 5;
+    tablogo[2].ligne = 345;
+    tablogo[2].colonne = 40;
+    tablogo[2].type = 5;
 
     ///centrale electrique
-    tablogo[4].ligne = 330;
-    tablogo[4].colonne = 110;
-    tablogo[4].type = 6;
+    tablogo[3].ligne = 330;
+    tablogo[3].colonne = 110;
+    tablogo[3].type = 6;
 
     ///pompier
-    tablogo[5].ligne = 410;
-    tablogo[5].colonne = 75;
-    tablogo[5].type = 7;
+    tablogo[4].ligne = 410;
+    tablogo[4].colonne = 75;
+    tablogo[4].type = 7;
 
     /// croix:
-    tablogo[9].ligne=480;
-    tablogo[9].colonne=40;
-    tablogo[9].type=10;
+    tablogo[5].ligne=480;
+    tablogo[5].colonne=40;
+    tablogo[5].type=10;
 
     return tablogo;
 }

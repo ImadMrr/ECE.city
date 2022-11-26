@@ -219,6 +219,10 @@ void construction_map(t_ville* V, BITMAP* fond, int refSlect, time_t start )
     int stop = 0;
     int lim = 0;
 
+    int compareX1=0, compareY1=0;///Comparaison pour la route
+    int saveColonne1=0, saveLigne1=0;
+    int etat=0, etatPred=0;
+
     time_t end;
     float temps;
 
@@ -227,6 +231,7 @@ void construction_map(t_ville* V, BITMAP* fond, int refSlect, time_t start )
 
     BITMAP* route2 = load_bitmap("documents/bitmap/map/route2.bmp", NULL);
     BITMAP* route1 = load_bitmap("documents/bitmap/map/route1.bmp", NULL);
+    BITMAP* route3 = load_bitmap("documents/bitmap/map/route3.bmp", NULL);
     BITMAP* chateau = load_bitmap("documents/bitmap/map/chateau.bmp", NULL);
     BITMAP* pompier = load_bitmap("documents/bitmap/map/pompier.bmp", NULL);
     BITMAP* elec = load_bitmap("documents/bitmap/map/centraleElec.bmp", NULL);
@@ -264,15 +269,9 @@ void construction_map(t_ville* V, BITMAP* fond, int refSlect, time_t start )
                 champPorte( buffer, mouse_x, mouse_y,buf,refSlect,V->tabcases );
             }
 
-            if( refSlect == 2)
+            if( refSlect == 8)
             {
-                draw_sprite(buf, route2, mouse_x-10, mouse_y-10);
-                champPorte( buffer, mouse_x, mouse_y, buf,refSlect,V->tabcases );
-            }
-
-            if( refSlect == 3)
-            {
-                draw_sprite(buf, route1, mouse_x-10, mouse_y-10);
+                draw_sprite(buf, route3, mouse_x-10, mouse_y-10);
                 champPorte( buffer, mouse_x, mouse_y, buf,refSlect,V->tabcases );
             }
             if(refSlect == 5)
@@ -368,17 +367,113 @@ void construction_map(t_ville* V, BITMAP* fond, int refSlect, time_t start )
 
                 if(g == 200 && V->tabcases[indiceligne][indicecolonne].type == 0)
                 {
-                    if(  refSlect == 2 )
+                    if(  refSlect == 8 )
                     {
-                        V->tabcases[indiceligne][indicecolonne].type = 2;
+
                         V->argent = V->argent - 10;
-                        draw_sprite(fond, route2,V->tabcases[indiceligne][indicecolonne].colonne,V->tabcases[indiceligne][indicecolonne].ligne );
-                    }
-                    if(  refSlect == 3 )
-                    {
-                        V->tabcases[indiceligne][indicecolonne].type = 3;
-                        V->argent = V->argent - 10;
-                        draw_sprite(fond,route1, V->tabcases[indiceligne][indicecolonne].colonne, V->tabcases[indiceligne][indicecolonne].ligne);
+                        etat=1;
+
+                        ///-----------------------CREATION DS ETATS : -------------------------
+
+                        if( compareY1 < V->tabcases[indiceligne][indicecolonne].ligne && compareX1 < V->tabcases[indiceligne][indicecolonne].colonne )
+                            {
+                                etat=1;
+                            }
+                        else if ( compareY1 > V->tabcases[indiceligne][indicecolonne].ligne && compareX1 > V->tabcases[indiceligne][indicecolonne].colonne )
+                            {
+                                etat=2;
+                            }
+                        else if ( compareY1 < V->tabcases[indiceligne][indicecolonne].ligne && compareX1 > V->tabcases[indiceligne][indicecolonne].colonne )
+                            {
+                                etat=3;
+                            }
+                        else if ( compareY1 > V->tabcases[indiceligne][indicecolonne].ligne && compareX1 < V->tabcases[indiceligne][indicecolonne].colonne )
+                            {
+                                etat=4;
+                            }
+
+
+                        ///--------------------TRAITEMENT DES DIFFERENTS CAS : -----------------------------------
+
+                        if( (compareX1 !=0 && compareY1 !=0) && etat==1 )
+                            {
+                                if( etatPred!=etat )
+                                    {
+                                        draw_sprite(fond,route3, V->tabcases[saveLigne1][saveColonne1].colonne, V->tabcases[saveLigne1][saveColonne1].ligne);
+                                        V->tabcases[saveLigne1][saveColonne1].type = 8;
+                                    }
+
+                                draw_sprite(fond,route1, V->tabcases[indiceligne][indicecolonne].colonne, V->tabcases[indiceligne][indicecolonne].ligne);
+                                compareX1= V->tabcases[indiceligne][indicecolonne].colonne;
+                                compareY1= V->tabcases[indiceligne][indicecolonne].ligne;
+                                saveColonne1=indicecolonne, saveLigne1=indiceligne;
+                                V->tabcases[indiceligne][indicecolonne].type = 3;
+
+
+                                etatPred=1;
+                            }
+                        else if( (compareX1 !=0 && compareY1 !=0) && etat==2)
+                            {
+                                if( etatPred != etat )
+                                    {
+                                        draw_sprite(fond,route3, V->tabcases[saveLigne1][saveColonne1].colonne, V->tabcases[saveLigne1][saveColonne1].ligne);
+                                        V->tabcases[saveLigne1][saveColonne1].type = 8;
+                                    }
+
+                                draw_sprite(fond,route1, V->tabcases[indiceligne][indicecolonne].colonne, V->tabcases[indiceligne][indicecolonne].ligne);
+                                compareX1= V->tabcases[indiceligne][indicecolonne].colonne;
+                                compareY1= V->tabcases[indiceligne][indicecolonne].ligne;
+                                saveColonne1=indicecolonne, saveLigne1=indiceligne;
+                                V->tabcases[indiceligne][indicecolonne].type = 3;
+
+                                etatPred=2;
+
+                            }
+                        else if( (compareX1 !=0 && compareY1) !=0 && etat==3 )
+                            {
+
+                                 if( etatPred != etat )
+                                    {
+                                        draw_sprite(fond,route3, V->tabcases[saveLigne1][saveColonne1].colonne, V->tabcases[saveLigne1][saveColonne1].ligne);
+                                        V->tabcases[saveLigne1][saveColonne1].type = 8;
+                                    }
+
+                                draw_sprite(fond,route2, V->tabcases[indiceligne][indicecolonne].colonne, V->tabcases[indiceligne][indicecolonne].ligne);
+                                compareX1= V->tabcases[indiceligne][indicecolonne].colonne;
+                                compareY1= V->tabcases[indiceligne][indicecolonne].ligne;
+                                saveColonne1=indicecolonne, saveLigne1=indiceligne;
+                                V->tabcases[indiceligne][indicecolonne].type = 2;
+
+
+                                etatPred=3;
+                            }
+                        else if( (compareX1 !=0 && compareY1 !=0) && etat==4 )
+                            {
+
+                                if( etatPred != etat )
+                                    {
+                                        draw_sprite(fond,route3, V->tabcases[saveLigne1][saveColonne1].colonne, V->tabcases[saveLigne1][saveColonne1].ligne);
+                                        V->tabcases[saveLigne1][saveColonne1].type = 8;
+                                    }
+
+                                draw_sprite(fond,route2, V->tabcases[indiceligne][indicecolonne].colonne, V->tabcases[indiceligne][indicecolonne].ligne);
+                                compareX1= V->tabcases[indiceligne][indicecolonne].colonne;
+                                compareY1= V->tabcases[indiceligne][indicecolonne].ligne;
+                                saveColonne1=indicecolonne, saveLigne1=indiceligne;
+                                V->tabcases[indiceligne][indicecolonne].type = 2;
+
+                                etatPred=4;
+
+                            }
+                        else if ( compareX1 ==0 && compareY1 ==0 )
+                            {
+                                V->tabcases[indiceligne][indicecolonne].type = 8;
+                                draw_sprite(fond, route3,V->tabcases[indiceligne][indicecolonne].colonne,V->tabcases[indiceligne][indicecolonne].ligne );
+                                compareX1= V->tabcases[indiceligne][indicecolonne].colonne;
+                                compareY1= V->tabcases[indiceligne][indicecolonne].ligne;
+                                saveColonne1=indicecolonne, saveLigne1=indiceligne;
+                            }
+
                     }
                     else if(refSlect == 4 || refSlect == 7)
                     {

@@ -48,7 +48,7 @@ void modif_niveau_bat_capitaliste(t_ville* V, int i, int j)
     free(tab_hab);
 }
 
-void fin_de_cycle(t_ville* V)
+void fin_de_cycle(t_ville* V, BITMAP* fond)
 {
     int connexe = 0;
     for(int i= 0; i<60; i++)
@@ -60,20 +60,13 @@ void fin_de_cycle(t_ville* V)
                 time(&V->tabcases[i][j].fin);
                 V->tabcases[i][j].temps = difftime(V->tabcases[i][j].fin, V->tabcases[i][j].debut) - V->tabcases[i][j].temps_save;
             }
-            if(V->tabcases[i][j].temps == 1 && V->tabcases[i][j].type == 4)
-            {
-                aleatoire_feu(V,i,j);
-            }
-            if(V->tabcases[i][j].temps == 15 && V->tabcases[i][j].type == 4)
-            {
-                pompier(V,i,j);
-            }
             if(V->tabcases[i][j].temps > 15 && V->tabcases[i][j].type == 4)
             {
                 time(&V->tabcases[i][j].debut);
                 V->argent = V->argent + (V->tabcases[i][j].nbr_hab * 10);
                 V->circ_eau = init(V->circ_eau, i,j);
                 connexe = BFS(V,V->circ_eau,i,j);
+                V->tabcases[i][j].connex = connexe;
                 if(connexe == 0)
                 {
                     V->tabcases[i][j].niveau = 0;
@@ -94,6 +87,38 @@ void fin_de_cycle(t_ville* V)
             }
         }
     }
+}
 
+void cycle_feu(float temps, t_ville* V)
+{
+    int repet = 0;
+    if((int)temps%15 == 0 && repet == 0)
+    {
+        repet = 1;
+        aleatoire_feu(V);
+        pompier(V);
+    }
+    if((int)temps%15 == 14)
+    {
+        pompier(V);
+        controle_feu(V);
+    }
+}
+
+void controle_feu(t_ville* V)
+{
+    for(int L= 0; L<60; L++)
+    {
+        for(int C = 0; C < 26; C++)
+        {
+            if(V->tabcases[L][C].type == 4)
+            {
+                if(V->tabcases[L][C].feu == 1)
+                {
+                    V->tabcases[L][C].niveau = 0;
+                }
+            }
+        }
+    }
 }
 

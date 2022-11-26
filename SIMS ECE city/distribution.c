@@ -7,7 +7,7 @@ void dist_eau(t_ville* V)
     {
         for(int C = 0; C<26; C++)
         {
-            if(V->tabcases[L][C].type == 4) // c'est une habitation
+            if(V->tabcases[L][C].type == 4 && V->tabcases[L][C].connex == 1) // c'est une habitation
             {
                 ind = 0;
                 djikstra(V->circ_eau, L,C);
@@ -66,7 +66,7 @@ void dist_elec(t_ville* V)
     {
         for(int C = 0; C<26; C++)
         {
-            if(V->tabcases[L][C].type == 4) // c'est une habitation
+            if(V->tabcases[L][C].type == 4 && V->tabcases[L][C].connex == 1) // c'est une habitation
             {
                 V->tabcases[L][C].vu = 0;
                 djikstra(V->circ_eau, L,C);
@@ -98,7 +98,7 @@ void dist_elec(t_ville* V)
                     coloration_chemin_elec(V, arr_L, arr_C);
                 }
 
-                V->capa_eau = (V->num_chateau * 5000) - V->habitants; /// Calcul de la capacite restante de la ville
+                V->capa_elec = (V->num_centrale * 5000) - V->habitants; /// Calcul de la capacite restante de la ville
 
             }
             V->tabcases[deb_L][deb_C].vu = 1;
@@ -190,35 +190,47 @@ void affichage_info_distribution_elec(t_ville* V,int cliqueX,int  cliqueY, BITMA
     }
 }
 
-void pompier(t_ville* V, int L, int C)
+void pompier(t_ville* V/*, int L, int C*/)
 {
     int arr_L, arr_C;
-    if(V->tabcases[L][C].type == 4)
+    for(int L=0; L< 60; L++)
     {
-        djikstra(V->circ_eau, L, C);
-        minimum_pomp(V, &arr_L, &arr_C);
-        if(arr_L != -1)
+        for(int C = 0; C< 26; C++)
         {
-            printf("distance pompier : %d\n", V->circ_eau->pSommet[arr_L][arr_C]->distance);
-            if(V->circ_eau->pSommet[arr_L][arr_C]->distance <= 20)
-                V->tabcases[L][C].protec = 1;
-            else
-                V->tabcases[L][C].protec = 0;
+            if(V->tabcases[L][C].type == 4)
+            {
+                djikstra(V->circ_eau, L, C);
+                minimum_pomp(V, &arr_L, &arr_C);
+                if(arr_L != -1)
+                {
+                    if(V->circ_eau->pSommet[arr_L][arr_C]->distance <= 20)
+                        V->tabcases[L][C].feu = 0;
+                    /*else
+                        V->tabcases[L][C].feu = 1;*/
+                }
+                /*else
+                    V->tabcases[L][C].feu = 1;*/
+            }
         }
-        else
-            V->tabcases[L][C].protec = 0;
     }
 }
 
-void aleatoire_feu(t_ville* V, int L, int C)
+void aleatoire_feu(t_ville* V/*, int L, int C*/)
 {
     int alea = 0;
-    if(V->tabcases[L][C].type == 4)
+    for(int L= 0; L< 60; L++)
     {
-        alea = (rand()%100) +1;
-        if(alea <= 80)
-            V->tabcases[L][C].feu = 1;
-        else
-            V->tabcases[L][C].feu = 0;
+        for(int C = 0; C < 26; C++)
+        {
+            if(V->tabcases[L][C].type == 4)
+            {
+                alea = (rand()%100) +1;
+                if(alea <= 30)
+                    V->tabcases[L][C].feu = 1;
+                else
+                    V->tabcases[L][C].feu = 0;
+            }
+        }
     }
 }
+

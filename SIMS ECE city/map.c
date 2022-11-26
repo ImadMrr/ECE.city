@@ -18,6 +18,7 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
 
     BITMAP* route1 = NULL;
     BITMAP* route2 = NULL;
+    BITMAP* route3 = NULL;
 
     BITMAP* niv1 = NULL;
     BITMAP* niv2 = NULL;
@@ -87,6 +88,7 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
 
         route1 = load_bitmap("documents/bitmap/map/route1.bmp", NULL);
         route2 = load_bitmap("documents/bitmap/map/route2.bmp", NULL);
+        route3 = load_bitmap("documents/bitmap/map/route3.bmp", NULL);
 
         niv1 = load_bitmap("documents/bitmap/map/affiche1niv0.bmp", NULL);
         niv2 = load_bitmap("documents/bitmap/map/affiche2niv0.bmp", NULL);
@@ -137,6 +139,7 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
         ground = load_bitmap("documents/bitmap/map/niv-1.bmp", NULL);
         route1 = load_bitmap("documents/bitmap/map/eauniv1.bmp", NULL);
         route2 = load_bitmap("documents/bitmap/map/eauniv1.bmp", NULL);
+        route3 = load_bitmap("documents/bitmap/map/eauniv1.bmp", NULL);
         bat = load_bitmap("documents/bitmap/map/batsous-sol.bmp", NULL);
         pompier = load_bitmap("documents/bitmap/map/batsous-sol.bmp", NULL);
 
@@ -156,6 +159,7 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
         ground = load_bitmap("documents/bitmap/map/niv-2.bmp", NULL);
         route1 = load_bitmap("documents/bitmap/map/elec.bmp", NULL);
         route2 = load_bitmap("documents/bitmap/map/elec.bmp", NULL);
+        route3 = load_bitmap("documents/bitmap/map/elec.bmp", NULL);
         bat = load_bitmap("documents/bitmap/map/batsous-sol.bmp", NULL);
 
         chateau = load_bitmap("documents/bitmap/map/chateausoussol.bmp", NULL);
@@ -186,35 +190,19 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
             if(V->tabcases[k][m].type == 2)
             {
                 draw_sprite(fond, route2, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne);
-                if(V->tabcases[k][m].c_eau == 9 && niveau == -1)
-                {
-                    dessin_chemin_losange(route2, makecol(0,112,113));
-                }
-                if(V->tabcases[k][m].c_elec == 9 && niveau == -2)
-                {
-                    dessin_chemin_losange(route2, makecol(230,220,76));
-                }
             }
             if(V->tabcases[k][m].type == 3)
             {
                 draw_sprite(fond, route1, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne);
-                if(V->tabcases[k][m].c_eau == 9 && niveau == -1)
-                {
-                    dessin_chemin_losange(route1, makecol(0,112,113));
-                }
-                if(V->tabcases[k][m].c_elec == 9 && niveau == -2)
-                {
-                    dessin_chemin_losange(route1, makecol(230,220,76));
-                }
             }
-            if(V->tabcases[k][m].feu == 1 && V->tabcases[k][m].protec == 1)
+            if(V->tabcases[k][m].type == 8)
+            {
+                draw_sprite(fond, route3, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne);
+            }
+            /*if(V->tabcases[k][m].feu == 1 && V->tabcases[k][m].protec == 1)
             {
                 draw_sprite(fond, pomp, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne+50);
-            }
-            if(V->tabcases[k][m].feu == 1 && V->tabcases[k][m].protec == 0)
-            {
-                draw_sprite(fond, feu, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne+50);
-            }
+            }*/
         }
     }
     for(int k=0; k<60; k++)
@@ -225,7 +213,6 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
             {
                 if(niveau == 0)
                 {
-                    V->tabcases[k][m].alea = 2;
                     ///------------------------NIVEAU 0 : TERRAIN VAGUE
 
                     if(V->tabcases[k][m].niveau == 0)
@@ -233,6 +220,7 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
                         if(V->tabcases[k][m].ruine == 0)
                         {
                             draw_sprite(fond, m0, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-85);
+                            //draw_sprite(fond, feu, V->tabcases[k][m].colonne-10, V->tabcases[k][m].ligne-40);
                         }
                         else
                         {
@@ -323,6 +311,10 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
                             draw_sprite(fond, m4t3, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-130);
                         }
                     }
+                    if(V->tabcases[k][m].feu == 1)
+                    {
+                        draw_sprite(fond, feu, V->tabcases[k][m].colonne-10, V->tabcases[k][m].ligne-40);
+                    }
 
                 }
 
@@ -383,9 +375,8 @@ void afficher_outil(t_cases* tablogo,t_cases** tabcasesMenu, BITMAP* fond)
     BITMAP* logoBat1 = load_bitmap("documents/bitmap/map/logobat.bmp", NULL);
     logoBat1 = lave_bitmap2(logoBat1);
 
-    BITMAP* route2 = load_bitmap("documents/bitmap/map/route2.bmp", NULL);
+    BITMAP* route3 = load_bitmap("documents/bitmap/map/route3.bmp", NULL);
 
-    BITMAP* route1 = load_bitmap("documents/bitmap/map/route1.bmp", NULL);
 
     BITMAP* logochat = load_bitmap("documents/bitmap/map/logochateau.bmp", NULL);
     logochat = lave_bitmap(logochat);
@@ -403,23 +394,20 @@ void afficher_outil(t_cases* tablogo,t_cases** tabcasesMenu, BITMAP* fond)
     draw_sprite(fond, logoBat1, tablogo[0].colonne, tablogo[0].ligne);
 
     ///Affichage du logo bat2:
-    draw_sprite(fond, route2, tablogo[1].colonne, tablogo[1].ligne);
+    draw_sprite(fond, route3, tablogo[1].colonne, tablogo[1].ligne);
 
     ///Affichage du logo route:
-    draw_sprite(fond, route1, tablogo[2].colonne, tablogo[2].ligne);
+    draw_sprite(fond, logochat, tablogo[2].colonne, tablogo[2].ligne);
 
-    ///Affichage du logo croix:
-    draw_sprite(fond, croix, tablogo[9].colonne, tablogo[9].ligne);
 
-    draw_sprite(fond, logochat, tablogo[3].colonne, tablogo[3].ligne);
+    draw_sprite(fond, logocentrale, tablogo[3].colonne, tablogo[3].ligne);
 
-    draw_sprite(fond, logocentrale, tablogo[4].colonne, tablogo[4].ligne);
+    draw_sprite(fond, logopompier, tablogo[4].colonne, tablogo[4].ligne);
 
-    draw_sprite(fond, logopompier, tablogo[5].colonne, tablogo[5].ligne);
+    draw_sprite(fond, croix, tablogo[5].colonne, tablogo[5].ligne);
 
     destroy_bitmap(logoBat1);
-    destroy_bitmap(route1);
-    destroy_bitmap(route2);
+    destroy_bitmap(route3);
     destroy_bitmap(croix);
     destroy_bitmap(logocentrale);
     destroy_bitmap(logopompier);
@@ -460,7 +448,7 @@ void maps(int type)  /// 0 : nouvelle partie | 1 : partie charge
         refSelect = cliqueChoixMenu(mouse_x,mouse_y,tablogo);
         time(&end);
 
-        fin_de_cycle(V);
+        fin_de_cycle(V,fond2);
 
         temps = difftime(end, start) + V->temps - temps_pause;
 
@@ -484,6 +472,8 @@ void maps(int type)  /// 0 : nouvelle partie | 1 : partie charge
         {
             niveau = -2;
         }
+        cycle_feu(temps, V);
+        printf("%d\n", (int)temps%15);
         afficher_map(V,fond,niveau);
         if(niveau == 0)
         {

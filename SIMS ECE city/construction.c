@@ -199,6 +199,10 @@ void suppression(t_ville* V, BITMAP* fond, time_t start)
                         V->capa_elec = V->capa_elec - V->tabcases[indiceligne][indicecolonne].capa_elec;
                         V->tabcases[indiceligne][indicecolonne].capa_elec = 0;
                     }
+                    if(V->tabcases[indiceligne][indicecolonne].type == 7)
+                    {
+                        ecriture_case_maisons(V->tabcases, indiceligne,indicecolonne,0);
+                    }
                     V->tabcases[indiceligne][indicecolonne].type = 0;
                 }
                 stop = 1;
@@ -218,11 +222,17 @@ void construction_map(t_ville* V, BITMAP* fond, int refSlect, time_t start )
     time_t end;
     float temps;
 
-    BITMAP* bat1 = load_bitmap("documents/bitmap/map/bat1.bmp", NULL);
+    BITMAP* bat1 = load_bitmap("documents/bitmap/map/n-0.bmp", NULL);
+    bat1 = lave_bitmap(bat1);
+
     BITMAP* route2 = load_bitmap("documents/bitmap/map/route2.bmp", NULL);
     BITMAP* route1 = load_bitmap("documents/bitmap/map/route1.bmp", NULL);
     BITMAP* chateau = load_bitmap("documents/bitmap/map/chateau.bmp", NULL);
-    chateau = lave_bitmap2(chateau);
+    BITMAP* pompier = load_bitmap("documents/bitmap/map/pompier.bmp", NULL);
+    BITMAP* elec = load_bitmap("documents/bitmap/map/centraleElec.bmp", NULL);
+    elec = lave_bitmap2(elec);
+    pompier = lave_bitmap2(pompier);
+    chateau = lave_bitmap(chateau);
 
     BITMAP* poubelle = load_bitmap("documents/bitmap/props/poubelle.bmp", NULL);
     poubelle = lave_bitmap(poubelle);
@@ -250,7 +260,7 @@ void construction_map(t_ville* V, BITMAP* fond, int refSlect, time_t start )
 
             if( refSlect == 4)
             {
-                draw_sprite(buf, bat1, mouse_x-10, mouse_y-90);
+                draw_sprite(buf, bat1, mouse_x-10, mouse_y-95);
                 champPorte( buffer, mouse_x, mouse_y,buf,refSlect,V->tabcases );
             }
 
@@ -267,13 +277,18 @@ void construction_map(t_ville* V, BITMAP* fond, int refSlect, time_t start )
             }
             if(refSlect == 5)
             {
-                draw_sprite(buf, chateau, mouse_x-10, mouse_y-116);
+                draw_sprite(buf, chateau, mouse_x-10, mouse_y-50);
                 champPorte(buffer, mouse_x,mouse_y, buf,refSlect,V->tabcases);
             }
             if(refSlect == 6)
             {
-                draw_sprite(buf, chateau, mouse_x-10, mouse_y-116);
+                draw_sprite(buf, elec, mouse_x-10, mouse_y-97);
                 champPorte(buffer, mouse_x,mouse_y, buf,refSlect,V->tabcases);
+            }
+            if(refSlect == 7)
+            {
+                draw_sprite(buf, pompier, mouse_x, mouse_y - 90);
+                champPorte(buffer, mouse_x, mouse_y, buf,refSlect,V->tabcases);
             }
             blit(buf, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
             clear_bitmap(buf);
@@ -286,7 +301,7 @@ void construction_map(t_ville* V, BITMAP* fond, int refSlect, time_t start )
                 }
                 int pixel = 0;
                 int g = 0;
-                if(refSlect == 4)
+                if(refSlect == 4 || refSlect == 7)
                 {
                     if(mouse_x > 800)
                     {
@@ -365,7 +380,7 @@ void construction_map(t_ville* V, BITMAP* fond, int refSlect, time_t start )
                         V->argent = V->argent - 10;
                         draw_sprite(fond,route1, V->tabcases[indiceligne][indicecolonne].colonne, V->tabcases[indiceligne][indicecolonne].ligne);
                     }
-                    else if(refSlect == 4)
+                    else if(refSlect == 4 || refSlect == 7)
                     {
                         verif_placement_bat(V->tabcases,indiceligne,indicecolonne,&autor);
                     }
@@ -404,6 +419,12 @@ void construction_map(t_ville* V, BITMAP* fond, int refSlect, time_t start )
                     V->argent = V->argent - 100000;
                     V->tabcases[indiceligne][indicecolonne].num_centrale  = V->num_centrale + 1;
                     V->num_centrale += 1;
+                }
+                if(refSlect == 7)
+                {
+                    V->tabcases[indiceligne][indicecolonne].type = 7;
+                    ecriture_case_maisons(V->tabcases,indiceligne,indicecolonne,9);
+                    V->argent = V->argent - 50000;
                 }
 
                 stop = 1;

@@ -1,5 +1,17 @@
 #include "header.h"
 
+void musique()
+{
+    SAMPLE* audio = load_sample("documents/sons/son.wav");
+    if(audio == NULL)
+    {
+        printf("Erreur d'ouverture fichier audio\n");
+    }
+
+    play_sample(audio, 1000,128,1000,60);
+
+}
+
 BITMAP* lave_bitmap(BITMAP* fond)
 {
     int pixel =0;
@@ -182,9 +194,9 @@ BITMAP* dessin_chemin_losange(BITMAP* losange, int couleur)
     {
         for(int y=0; y < losange->h; y++)
         {
-            if(x == 4 || x == 5 || x == 34 || x == 35)
+            if( x == 5 || x == 34 )
             {
-                if(y >= 9 && y<= 11)
+                if(y == 10)
                 {
                     putpixel(losange, x, y, couleur);
                 }
@@ -192,7 +204,7 @@ BITMAP* dessin_chemin_losange(BITMAP* losange, int couleur)
 
             if(x == 6 || x == 7 || x == 32 || x == 33)
             {
-                if(y>= 8 && y <= 12)
+                if( y == 10)
                 {
                     putpixel(losange, x, y, couleur);
                 }
@@ -200,7 +212,7 @@ BITMAP* dessin_chemin_losange(BITMAP* losange, int couleur)
 
             if(x == 8 || x == 9 || x == 30 || x == 31)
             {
-                if(y>=7 && y<=13)
+                if(y>=9 && y<=11)
                 {
                     putpixel(losange, x, y, couleur);
                 }
@@ -208,7 +220,7 @@ BITMAP* dessin_chemin_losange(BITMAP* losange, int couleur)
 
             if(x == 10 || x == 11 || x == 28 || x == 29)
             {
-                if(y >=6 && y<=14)
+                if(y >=8 && y<=12)
                 {
                     putpixel(losange, x, y, couleur);
                 }
@@ -216,7 +228,7 @@ BITMAP* dessin_chemin_losange(BITMAP* losange, int couleur)
 
             if(x == 12 || x == 13 || x == 26 || x == 27)
             {
-                if(y>=5 && y <= 15)
+                if(y>=7 && y <= 13)
                 {
                     putpixel(losange, x, y, couleur);
                 }
@@ -224,7 +236,7 @@ BITMAP* dessin_chemin_losange(BITMAP* losange, int couleur)
 
             if(x == 14 || x == 15 || x == 24 || x == 25)
             {
-                if(y>=4 && y <=16)
+                if(y>=6 && y <=14)
                 {
                     putpixel(losange, x, y, couleur);
                 }
@@ -232,7 +244,7 @@ BITMAP* dessin_chemin_losange(BITMAP* losange, int couleur)
 
             if(x == 16 || x == 17 || x == 22 || x == 23)
             {
-                if(y>=3 && y<=17)
+                if(y>=5 && y<=15)
                 {
                     putpixel(losange, x, y, couleur);
                 }
@@ -240,7 +252,7 @@ BITMAP* dessin_chemin_losange(BITMAP* losange, int couleur)
 
             if(x >= 18 && x <=21)
             {
-                if(y >= 2 && y <= 18)
+                if(y >= 4 && y <= 16)
                 {
                     putpixel(losange, x, y, couleur);
                 }
@@ -249,4 +261,48 @@ BITMAP* dessin_chemin_losange(BITMAP* losange, int couleur)
         }
     }
     return losange;
+}
+
+void coloration_chemin_eau(t_ville* V, int arriveeL, int arriveeC)
+{
+    int tpmL = 0;
+    int tpmC = 0;
+    int x;
+    if(V->tabcases[arriveeL][arriveeC].type == 2 || V->tabcases[arriveeL][arriveeC].type == 3)
+    {
+        V->tabcases[arriveeL][arriveeC].c_eau = 9;
+    }
+    tpmL = arriveeL;//valeur temporaire
+    tpmC = arriveeC;//valeur temporaire
+    while(tpmL != -3)
+    {
+        if(V->tabcases[arriveeL][arriveeC].type == 2 || V->tabcases[arriveeL][arriveeC].type == 3)
+        {
+            V->tabcases[arriveeL][arriveeC].c_eau = 9;
+        }
+        x = V->circ_eau->pSommet[tpmL][tpmC]->pred_L;
+        tpmC = V->circ_eau->pSommet[tpmL][tpmC]->pred_C;
+        tpmL = x;
+    }
+}
+
+
+void coloration_chemin_elec(t_ville* V, int arriveeL, int arriveeC)
+{
+    int tpmL = 0;
+    int tpmC = 0;
+    int x;
+    V->tabcases[arriveeL][arriveeC].c_elec = 9;
+    tpmL = arriveeL;//valeur temporaire
+    tpmC = arriveeC;//valeur temporaire
+    while(tpmL != -3)
+    {
+        if(V->circ_eau->pSommet[tpmL][tpmC]->pred_L != -3)//jusqu'au sommet de départ
+        {
+            V->tabcases[tpmL][tpmC].c_elec = 9;
+        }
+        x = V->circ_eau->pSommet[tpmL][tpmC]->pred_L;
+        tpmC = V->circ_eau->pSommet[tpmL][tpmC]->pred_C;
+        tpmL = x;
+    }
 }

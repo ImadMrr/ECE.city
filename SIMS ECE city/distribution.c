@@ -48,6 +48,7 @@ void dist_eau(t_ville* V)
                     V->tabcases[deb_L][deb_C].tabeau[ind].source_L = arr_L;
                     V->tabcases[deb_L][deb_C].tabeau[ind].source_C = arr_C;
                     V->tabcases[deb_L][deb_C].tabeau[ind].valid = 1;
+                    coloration_chemin_eau(V, arr_L, arr_C);
                     ind += 1;
 
                     V->capa_eau = (V->num_chateau * 5000) - V->habitants; /// Calcul de la capacite restante de la ville
@@ -94,6 +95,7 @@ void dist_elec(t_ville* V)
                     V->tabcases[deb_L][deb_C].tabelec.source_L = arr_L;
                     V->tabcases[deb_L][deb_C].tabelec.source_C = arr_C;
                     V->tabcases[deb_L][deb_C].tabelec.valid = 1;
+                    coloration_chemin_elec(V, arr_L, arr_C);
                 }
 
                 V->capa_eau = (V->num_chateau * 5000) - V->habitants; /// Calcul de la capacite restante de la ville
@@ -130,6 +132,8 @@ void re_initialisation(t_ville* V)
                 V->tabcases[i][j].capa_eau = 0;
                 V->tabcases[i][j].capa_elec = 0;
             }
+            V->tabcases[i][j].c_eau = 0;
+            V->tabcases[i][j].c_elec = 0;
 
         }
     }
@@ -183,5 +187,38 @@ void affichage_info_distribution_elec(t_ville* V,int cliqueX,int  cliqueY, BITMA
             textprintf_ex(fond, font, 200, 40, makecol(255,255,255), -1, "Centrale electrique numero %d", V->tabcases[indice_ligne][indice_colonne].num_centrale);
         }
         destroy_bitmap(buffer);
+    }
+}
+
+void pompier(t_ville* V, int L, int C)
+{
+    int arr_L, arr_C;
+    if(V->tabcases[L][C].type == 4)
+    {
+        djikstra(V->circ_eau, L, C);
+        minimum_pomp(V, &arr_L, &arr_C);
+        if(arr_L != -1)
+        {
+            printf("distance pompier : %d\n", V->circ_eau->pSommet[arr_L][arr_C]->distance);
+            if(V->circ_eau->pSommet[arr_L][arr_C]->distance <= 20)
+                V->tabcases[L][C].protec = 1;
+            else
+                V->tabcases[L][C].protec = 0;
+        }
+        else
+            V->tabcases[L][C].protec = 0;
+    }
+}
+
+void aleatoire_feu(t_ville* V, int L, int C)
+{
+    int alea = 0;
+    if(V->tabcases[L][C].type == 4)
+    {
+        alea = (rand()%100) +1;
+        if(alea <= 80)
+            V->tabcases[L][C].feu = 1;
+        else
+            V->tabcases[L][C].feu = 0;
     }
 }

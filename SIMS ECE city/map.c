@@ -15,9 +15,6 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
     BITMAP* eau = NULL;
 
     BITMAP* bat = NULL;
-    BITMAP* bat2 = NULL;
-
-    BITMAP* chateau = NULL;
 
     BITMAP* route1 = NULL;
     BITMAP* route2 = NULL;
@@ -25,16 +22,48 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
     BITMAP* niv1 = NULL;
     BITMAP* niv2 = NULL;
 
+    BITMAP* m0 = NULL;
+
+    BITMAP* r0t1 = NULL;
+    BITMAP* r0t2 = NULL;
+    BITMAP* r0t3 = NULL;
+
+    BITMAP* m1t1 = NULL;
+    BITMAP* m1t2 = NULL;
+    BITMAP* m1t3 = NULL;
+
+    BITMAP* m2t1 = NULL;
+    BITMAP* m2t2 = NULL;
+    BITMAP* m2t3 = NULL;
+
+    BITMAP* m3t1 = NULL;
+    BITMAP* m3t2 = NULL;
+    BITMAP* m3t3 = NULL;
+
+    BITMAP* m4t1 = NULL;
+    BITMAP* m4t2 = NULL;
+    BITMAP* m4t3 = NULL;
+
+    BITMAP* pompier = NULL;
+
+    BITMAP* chateau = NULL;
+    BITMAP* elec = NULL;
+
     BITMAP* pause = load_bitmap("documents/bitmap/props/pause.bmp", NULL);
     BITMAP* argent = load_bitmap("documents/bitmap/props/argent.bmp", NULL);
     BITMAP* habitant = load_bitmap("documents/bitmap/props/habitant.bmp", NULL);
     BITMAP* capa_eau = load_bitmap("documents/bitmap/props/eau.bmp", NULL);
     BITMAP* capa_elec = load_bitmap("documents/bitmap/props/elec.bmp", NULL);
+    BITMAP* feu = load_bitmap("documents/bitmap/props/feu.bmp", NULL);
+    BITMAP* pomp = load_bitmap("documents/bitmap/props/pompier.bmp", NULL);
+    feu = lave_bitmap2(feu);
+    pomp = lave_bitmap2(pomp);
     capa_elec = lave_bitmap2(capa_elec);
     capa_eau = lave_bitmap2(capa_eau);
     argent = lave_bitmap2(argent);
     pause = lave_bitmap(pause);
     habitant = lave_bitmap2(habitant);
+
 
     draw_sprite(fond, argent, 40,50);
     textprintf_ex(fond, font, 80, 60, makecol(0,0,0),-1, "%d", V->argent);
@@ -47,18 +76,14 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
 
     draw_sprite(fond, pause, 1350,5);
 
-
     eau = load_bitmap("documents/bitmap/map/eau.bmp", NULL);
 
     if(niveau == 0)
     {
         ground = load_bitmap("documents/bitmap/map/herbe.bmp", NULL);
 
-        bat = load_bitmap("documents/bitmap/map/bat2.bmp", NULL);
-        bat = lave_bitmap2(bat);
-        bat2 = load_bitmap("documents/bitmap/map/bat1.bmp", NULL);
         chateau = load_bitmap("documents/bitmap/map/chateau.bmp", NULL);
-        chateau = lave_bitmap2(chateau);
+        chateau = lave_bitmap(chateau);
 
         route1 = load_bitmap("documents/bitmap/map/route1.bmp", NULL);
         route2 = load_bitmap("documents/bitmap/map/route2.bmp", NULL);
@@ -66,23 +91,59 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
         niv1 = load_bitmap("documents/bitmap/map/affiche1niv0.bmp", NULL);
         niv2 = load_bitmap("documents/bitmap/map/affiche2niv0.bmp", NULL);
 
+        elec = load_bitmap("documents/bitmap/map/centraleElec.bmp", NULL);
+        elec = lave_bitmap2(elec);
+
+
+        m0 = load_bitmap("documents/bitmap/map/n-0.bmp", NULL);
+        m0 = lave_bitmap(m0);
+
+        r0t1 = load_bitmap("documents/bitmap/map/r-1.1.bmp", NULL);
+        r0t2 = load_bitmap("documents/bitmap/map/r-1.2.bmp", NULL);
+        r0t3 = load_bitmap("documents/bitmap/map/r-1.3.bmp", NULL);
+
+        m1t1 = load_bitmap("documents/bitmap/map/n-1.1.bmp", NULL);
+        m1t2 = load_bitmap("documents/bitmap/map/n-1.2.bmp", NULL);
+        m1t3 = load_bitmap("documents/bitmap/map/n-1.3.bmp", NULL);
+
+
+        m2t1 = load_bitmap("documents/bitmap/map/n-2.1.bmp", NULL);
+        m2t2 = load_bitmap("documents/bitmap/map/n-2.2.bmp", NULL);
+        m2t3 = load_bitmap("documents/bitmap/map/n-2.3.bmp", NULL);
+
+        m3t1 = load_bitmap("documents/bitmap/map/n-3.1.bmp", NULL);
+        m3t2 = load_bitmap("documents/bitmap/map/n-3.2.bmp", NULL);
+        m3t3 = load_bitmap("documents/bitmap/map/n-3.3.bmp", NULL);
+
+        m4t1 = load_bitmap("documents/bitmap/map/n-4.1.bmp", NULL);
+        m4t2 = load_bitmap("documents/bitmap/map/n-4.2.bmp", NULL);
+        m4t3 = load_bitmap("documents/bitmap/map/n-4.3.bmp", NULL);
+
+        m4t1 = lave_bitmap(m4t1);
+        m4t2 = lave_bitmap(m4t2);
+        m4t3 = lave_bitmap(m4t3);
+
+        pompier = load_bitmap("documents/bitmap/map/pompier.bmp", NULL);
+        pompier=lave_bitmap2(pompier);
+
+
         niv1 = lave_bitmap(niv1);
         niv2 = lave_bitmap(niv2);
         draw_sprite(fond, niv2,415,200 );
         draw_sprite(fond, niv1,330,140 );
     }
-
     if(niveau == -1)
     {
         ground = load_bitmap("documents/bitmap/map/niv-1.bmp", NULL);
         route1 = load_bitmap("documents/bitmap/map/eauniv1.bmp", NULL);
-        route1 = dessin_chemin_losange(route1, makecol(0,112,113));
         route2 = load_bitmap("documents/bitmap/map/eauniv1.bmp", NULL);
         bat = load_bitmap("documents/bitmap/map/batsous-sol.bmp", NULL);
-        bat2 = load_bitmap("documents/bitmap/map/batsous-sol.bmp", NULL);
+        pompier = load_bitmap("documents/bitmap/map/batsous-sol.bmp", NULL);
 
-        chateau = load_bitmap("documents/bitmap/map/chateau.bmp", NULL);
+        chateau = load_bitmap("documents/bitmap/map/chateausoussol.bmp", NULL);
         chateau = lave_bitmap2(chateau);
+        elec = load_bitmap("documents/bitmap/map/chateausoussol.bmp", NULL);
+        elec = lave_bitmap2(elec);
 
         niv2 = load_bitmap("documents/bitmap/map/affiche2niv1.bmp", NULL);
 
@@ -96,10 +157,12 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
         route1 = load_bitmap("documents/bitmap/map/elec.bmp", NULL);
         route2 = load_bitmap("documents/bitmap/map/elec.bmp", NULL);
         bat = load_bitmap("documents/bitmap/map/batsous-sol.bmp", NULL);
-        bat2 = load_bitmap("documents/bitmap/map/batsous-sol.bmp", NULL);
 
-        chateau = load_bitmap("documents/bitmap/map/chateau.bmp", NULL);
+        chateau = load_bitmap("documents/bitmap/map/chateausoussol.bmp", NULL);
         chateau = lave_bitmap2(chateau);
+        elec = load_bitmap("documents/bitmap/map/chateausoussol.bmp", NULL);
+        elec = lave_bitmap2(elec);
+        pompier = load_bitmap("documents/bitmap/map/batsous-sol.bmp", NULL);
     }
 
 
@@ -107,6 +170,11 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
     {
         for(int m = 0; m<26; m++)
         {
+            if( V->tabcases[k][m].alea ==0 )
+            {
+                V->tabcases[k][m].alea =  rand() % (3 - 1 + 1) + 1;
+            }
+
             if(V->tabcases[k][m].type == 0)
             {
                 draw_sprite(fond, ground, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne);
@@ -115,34 +183,184 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
             {
                 draw_sprite(fond, eau, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne);
             }
+            if(V->tabcases[k][m].type == 2)
+            {
+                draw_sprite(fond, route2, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne);
+                if(V->tabcases[k][m].c_eau == 9 && niveau == -1)
+                {
+                    dessin_chemin_losange(route2, makecol(0,112,113));
+                }
+                if(V->tabcases[k][m].c_elec == 9 && niveau == -2)
+                {
+                    dessin_chemin_losange(route2, makecol(230,220,76));
+                }
+            }
+            if(V->tabcases[k][m].type == 3)
+            {
+                draw_sprite(fond, route1, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne);
+                if(V->tabcases[k][m].c_eau == 9 && niveau == -1)
+                {
+                    dessin_chemin_losange(route1, makecol(0,112,113));
+                }
+                if(V->tabcases[k][m].c_elec == 9 && niveau == -2)
+                {
+                    dessin_chemin_losange(route1, makecol(230,220,76));
+                }
+            }
+            if(V->tabcases[k][m].feu == 1 && V->tabcases[k][m].protec == 1)
+            {
+                draw_sprite(fond, pomp, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne+50);
+            }
+            if(V->tabcases[k][m].feu == 1 && V->tabcases[k][m].protec == 0)
+            {
+                draw_sprite(fond, feu, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne+50);
+            }
         }
     }
     for(int k=0; k<60; k++)
     {
         for(int m = 0; m<26; m++)
         {
-            if(V->tabcases[k][m].type == 2)
-            {
-                draw_sprite(fond, route2, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne);
-            }
-            if(V->tabcases[k][m].type == 3)
-            {
-                draw_sprite(fond, route1, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne);
-            }
             if(V->tabcases[k][m].type == 4)
             {
-                if(V->tabcases[k][m].niveau == 0)
+                if(niveau == 0)
+                {
+                    V->tabcases[k][m].alea = 2;
+                    ///------------------------NIVEAU 0 : TERRAIN VAGUE
+
+                    if(V->tabcases[k][m].niveau == 0)
+                    {
+                        if(V->tabcases[k][m].ruine == 0)
+                        {
+                            draw_sprite(fond, m0, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-85);
+                        }
+                        else
+                        {
+                            if(V->tabcases[k][m].alea == 1)
+                            {
+                                draw_sprite(fond, r0t1, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-40);
+                            }
+                            if(V->tabcases[k][m].alea == 2)
+                            {
+                                draw_sprite(fond, r0t2, V->tabcases[k][m].colonne+8, V->tabcases[k][m].ligne-52);
+                            }
+                            if(V->tabcases[k][m].alea == 3)
+                            {
+                                draw_sprite(fond, r0t3, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-50);
+                            }
+                        }
+                    }
+
+                    ///---------------------------NIVEAU 1 : CABANE
+
+                    if(V->tabcases[k][m].niveau == 1)
+                    {
+                        if(V->tabcases[k][m].alea == 1 )
+                        {
+                            draw_sprite(fond, m1t1, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-40);
+                        }
+                        if(V->tabcases[k][m].alea == 2 )
+                        {
+                            draw_sprite(fond, m1t2, V->tabcases[k][m].colonne+8, V->tabcases[k][m].ligne-62);
+                        }
+                        if(V->tabcases[k][m].alea == 3 )
+                        {
+                            draw_sprite(fond, m1t3, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-50);
+                        }
+                    }
+
+                    ///---------------------------NIVEAU 2 : MAISON
+
+                    if(V->tabcases[k][m].niveau == 2)
+                    {
+                        if(V->tabcases[k][m].alea == 1 )
+                        {
+                            draw_sprite(fond, m2t1, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-60);
+                        }
+                        if(V->tabcases[k][m].alea == 2 )
+                        {
+                            draw_sprite(fond, m2t2, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-75);
+                        }
+                        if(V->tabcases[k][m].alea == 3 )
+                        {
+                            draw_sprite(fond, m2t3, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-80);
+
+                        }
+                    }
+
+                    ///---------------------------NIVEAU 3 : IMMEUBLE
+
+                    if(V->tabcases[k][m].niveau == 3)
+                    {
+                        if(V->tabcases[k][m].alea == 1 )
+                        {
+                            draw_sprite(fond, m3t1, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-80);
+                        }
+                        if(V->tabcases[k][m].alea == 2 )
+                        {
+                            draw_sprite(fond, m3t2, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-80);
+                        }
+                        if(V->tabcases[k][m].alea == 3 )
+                        {
+                            draw_sprite(fond, m3t3, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-90);
+                        }
+                    }
+
+                    ///---------------------------NIVEAU 4 : GRATTE-CIEL
+
+                    if(V->tabcases[k][m].niveau == 4)
+                    {
+                        if(V->tabcases[k][m].alea == 1 )
+                        {
+                            draw_sprite(fond, m4t1, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-140);
+                        }
+                        if(V->tabcases[k][m].alea == 2 )
+                        {
+                            draw_sprite(fond, m4t2, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-175);
+                        }
+                        if(V->tabcases[k][m].alea == 3 )
+                        {
+                            draw_sprite(fond, m4t3, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-130);
+                        }
+                    }
+
+                }
+
+                else
                 {
                     draw_sprite(fond, bat, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-80);
                 }
-                if(V->tabcases[k][m].niveau == 1)
+
+            }
+            if(niveau == 0)
+            {
+                if(V->tabcases[k][m].type == 5)
                 {
-                    draw_sprite(fond, bat2, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-80);
+                    draw_sprite(fond, chateau,V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-44);
+                }
+                if(V->tabcases[k][m].type == 6)
+                {
+                    draw_sprite(fond, elec, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-80);
+                }
+                if(V->tabcases[k][m].type == 7)
+                {
+                    draw_sprite(fond, pompier, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-75);
                 }
             }
-            if(V->tabcases[k][m].type == 5 || V->tabcases[k][m].type == 6)
+            if(niveau == -1 || niveau == -2)
             {
-                draw_sprite(fond, chateau,V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-110 );
+                if(V->tabcases[k][m].type == 5)
+                {
+                    draw_sprite(fond, chateau,V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-110);
+                }
+                if(V->tabcases[k][m].type == 6)
+                {
+                    draw_sprite(fond, elec, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-110);
+                }
+                if(V->tabcases[k][m].type == 7)
+                {
+                    draw_sprite(fond, pompier, V->tabcases[k][m].colonne, V->tabcases[k][m].ligne-80);
+                }
             }
         }
     }
@@ -151,7 +369,6 @@ void afficher_map(t_ville* V, BITMAP* fond, int niveau)
     destroy_bitmap(route1);
     destroy_bitmap(route2);
     destroy_bitmap(bat);
-    destroy_bitmap(bat2);
     destroy_bitmap(niv1);
     destroy_bitmap(niv2);
     destroy_bitmap(pause);
@@ -164,13 +381,20 @@ void afficher_outil(t_cases* tablogo,t_cases** tabcasesMenu, BITMAP* fond)
 {
     BITMAP* groundChoix = load_bitmap("documents/bitmap/map/fond outil2.bmp", NULL);
     BITMAP* logoBat1 = load_bitmap("documents/bitmap/map/logobat.bmp", NULL);
+    logoBat1 = lave_bitmap2(logoBat1);
 
     BITMAP* route2 = load_bitmap("documents/bitmap/map/route2.bmp", NULL);
 
     BITMAP* route1 = load_bitmap("documents/bitmap/map/route1.bmp", NULL);
 
     BITMAP* logochat = load_bitmap("documents/bitmap/map/logochateau.bmp", NULL);
-    logochat = lave_bitmap2(logochat);
+    logochat = lave_bitmap(logochat);
+
+    BITMAP* logocentrale = load_bitmap("documents/bitmap/map/logoelec.bmp", NULL);
+    logocentrale = lave_bitmap2(logocentrale);
+
+    BITMAP* logopompier = load_bitmap("documents/bitmap/map/logopompier.bmp", NULL);
+    logopompier = lave_bitmap2(logopompier);
 
     BITMAP* croix = load_bitmap("documents/bitmap/map/croix.bmp", NULL);
 
@@ -189,13 +413,16 @@ void afficher_outil(t_cases* tablogo,t_cases** tabcasesMenu, BITMAP* fond)
 
     draw_sprite(fond, logochat, tablogo[3].colonne, tablogo[3].ligne);
 
-    draw_sprite(fond, logochat, tablogo[4].colonne, tablogo[4].ligne);
+    draw_sprite(fond, logocentrale, tablogo[4].colonne, tablogo[4].ligne);
 
+    draw_sprite(fond, logopompier, tablogo[5].colonne, tablogo[5].ligne);
 
     destroy_bitmap(logoBat1);
     destroy_bitmap(route1);
     destroy_bitmap(route2);
     destroy_bitmap(croix);
+    destroy_bitmap(logocentrale);
+    destroy_bitmap(logopompier);
 }
 
 
@@ -209,6 +436,7 @@ void maps(int type)  /// 0 : nouvelle partie | 1 : partie charge
     if(type == 1)
     {
         V = chargement_info_ville();
+        V = lire_graphe(V);
     }
 
     t_cases** tabcasesmenu = initialisation_outil();
@@ -234,7 +462,7 @@ void maps(int type)  /// 0 : nouvelle partie | 1 : partie charge
 
         fin_de_cycle(V);
 
-        temps = difftime(end, start ) + V->temps - temps_pause;
+        temps = difftime(end, start) + V->temps - temps_pause;
 
         horloge(temps,fond2);
 

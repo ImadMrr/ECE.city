@@ -56,6 +56,7 @@ typedef struct cases
     time_t debut;
     time_t fin;
     int temps;
+    int temps_save;
     int niveau;
     int nbr_hab;
     int besoin_eau;
@@ -68,6 +69,12 @@ typedef struct cases
     int num_chateau;
     int num_centrale;
     int vu;
+    int alea;
+    int c_eau;
+    int c_elec;
+    int protec;
+    int feu;
+    int ruine;
 }t_cases;
 
 typedef struct ville
@@ -137,8 +144,8 @@ void sauvegarde_general(t_ville* V, float temps);
 void sauvegarde_matrice(t_cases** tabcases, char* nom);
 void sauvegarde_info_ville(t_ville* V, char* nom, float temps);
 void sauvegarde_matrice_niveau(t_cases** tabcases, char* nom);
-void sauvegarde_matrice_nbrhabitant(t_cases** tabcases, char* nom);
-void sauvegarde_matrice_capacite_eau(t_cases** tabcases, char* nom);
+void sauvegarde_matrice_temps(t_cases** tabcases, char* nom);
+void sauvegarde_matrice_alea(t_cases** tabcases, char* nom);
 void sauvegarde_matrice_capacite_elec(t_cases** tabcases, char* nom);
 
 char* saisie_sauvegarde();
@@ -187,6 +194,14 @@ void minimum_D(t_ville* V, int* imin_L, int* imin_C);
 void dist_elec(t_ville* V);
 void minimum_elec(t_ville* V, int* imin_L, int* imin_C, int deb_L, int deb_C);
 
+void musique();
 
+void coloration_chemin_eau(t_ville* V, int arriveeL, int arriveeC);
+
+void coloration_chemin_elec(t_ville* V, int arriveeL, int arriveeC);
+
+void minimum_pomp(t_ville* V, int* imin_L, int* imin_C);
+void pompier(t_ville* V, int L, int C);
+void aleatoire_feu(t_ville* V, int L, int C);
 
 #endif // HEADER_H_INCLUDED

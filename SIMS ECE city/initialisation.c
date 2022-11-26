@@ -16,6 +16,8 @@ void initialisation()
     set_mouse_sprite(curseur_souris);
     show_mouse(screen);
     destroy_bitmap(curseur_souris);
+
+    install_sound(DIGI_AUTODETECT, MIDI_NONE,0);
 }
 
 t_ville* init_ville()
@@ -72,6 +74,12 @@ t_cases** chargement_map()
             tabcases[i][j].niveau = 0;
             tabcases[i][j].num_chateau = 0;
             tabcases[i][j].num_centrale = 0;
+            tabcases[i][j].temps_save = 0;
+            tabcases[i][j].temps = 0;
+            tabcases[i][j].alea = 0;
+            tabcases[i][j].ruine = 0;
+            tabcases[i][j].protec = 0;
+            tabcases[i][j].feu = 0;
             colonne = colonne +40;
             fscanf(fichier, "%d", &tabcases[i][j].type);
         }
@@ -88,7 +96,7 @@ t_cases* initialisation_tabLogo()
 
     ///Batiment 1:
     tablogo[0].ligne=200;
-    tablogo[0].colonne=75;
+    tablogo[0].colonne=65;
     tablogo[0].type=4;
 
     ///route 2:
@@ -102,14 +110,19 @@ t_cases* initialisation_tabLogo()
     tablogo[2].type=3;
 
     ///chateau d'eau :
-    tablogo[3].ligne = 320;
+    tablogo[3].ligne = 345;
     tablogo[3].colonne = 40;
     tablogo[3].type = 5;
 
     ///centrale electrique
-    tablogo[4].ligne = 320;
+    tablogo[4].ligne = 330;
     tablogo[4].colonne = 110;
     tablogo[4].type = 6;
+
+    ///pompier
+    tablogo[5].ligne = 410;
+    tablogo[5].colonne = 75;
+    tablogo[5].type = 7;
 
     /// croix:
     tablogo[9].ligne=480;

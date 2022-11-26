@@ -16,9 +16,9 @@ void sauvegarde_general(t_ville* V, float temps)
     sauvegarde_matrice(V->tabcases,trajet);
     sauvegarde_info_ville(V, trajet,temps);
     sauvegarde_matrice_niveau(V->tabcases, trajet);
-    sauvegarde_matrice_nbrhabitant(V->tabcases, trajet);
-    sauvegarde_matrice_capacite_eau(V->tabcases, trajet);
-    sauvegarde_matrice_capacite_elec(V->tabcases, trajet);
+    sauvegarde_matrice_temps(V->tabcases, trajet);
+    sauvegarde_matrice_alea(V->tabcases, trajet);
+    /*sauvegarde_matrice_capacite_elec(V->tabcases, trajet);*/
 }
 
 void sauvegarde_matrice(t_cases** tabcases, char* nom)
@@ -89,10 +89,9 @@ void sauvegarde_info_ville(t_ville* V, char* nom, float temps)
     fprintf(fichier, "\n");
     fprintf(fichier, "%d", V->capa_elec);
     fprintf(fichier, "\n");
-
-    fprintf(fichier, "%d", V->nbr_c_eau);
+    fprintf(fichier, "%d", V->num_chateau);
     fprintf(fichier, "\n");
-    fprintf(fichier, "%d", V->nbr_c_elec);
+    fprintf(fichier, "%d", V->num_centrale);
     fprintf(fichier, "\n");
     fclose(fichier);
 }
@@ -123,12 +122,12 @@ void sauvegarde_matrice_niveau(t_cases** tabcases, char* nom)
     fclose(fichier);
 }
 
-void sauvegarde_matrice_nbrhabitant(t_cases** tabcases, char* nom)
+void sauvegarde_matrice_temps(t_cases** tabcases, char* nom)
 {
     char tpm[500];
     strcpy(tpm, nom);
-    char* trajet = (char*)malloc((strlen("/habitant.txt")+1 )* sizeof(char));
-    strcpy(trajet, "/habitant.txt");
+    char* trajet = (char*)malloc((strlen("/temps.txt")+1 )* sizeof(char));
+    strcpy(trajet, "/temps.txt");
     strcat(tpm, trajet);
 
     FILE* fichier = NULL;
@@ -142,19 +141,19 @@ void sauvegarde_matrice_nbrhabitant(t_cases** tabcases, char* nom)
     {
         for(int j = 0; j<26; j++)
         {
-            fprintf(fichier, "%d ", tabcases[i][j].nbr_hab);
+            fprintf(fichier, "%d ", tabcases[i][j].temps);
         }
         fprintf(fichier, "\n");
     }
     fclose(fichier);
 }
 
-void sauvegarde_matrice_capacite_eau(t_cases** tabcases, char* nom)
+void sauvegarde_matrice_alea(t_cases** tabcases, char* nom)
 {
     char tpm[500];
     strcpy(tpm, nom);
-    char* trajet = (char*)malloc((strlen("/capa_eau.txt")+1 )* sizeof(char));
-    strcpy(trajet, "/capa_eau.txt");
+    char* trajet = (char*)malloc((strlen("/alea.txt")+1 )* sizeof(char));
+    strcpy(trajet, "/alea.txt");
     strcat(tpm, trajet);
 
     FILE* fichier = NULL;
@@ -168,7 +167,7 @@ void sauvegarde_matrice_capacite_eau(t_cases** tabcases, char* nom)
     {
         for(int j = 0; j<26; j++)
         {
-            fprintf(fichier, "%d ", tabcases[i][j].capa_eau);
+            fprintf(fichier, "%d ", tabcases[i][j].alea);
         }
         fprintf(fichier, "\n");
     }
@@ -213,14 +212,12 @@ t_ville* chargement_info_ville()
     char tpm3[500];
     char tpm4[500];
     char tpm5[500];
-    char tpm6[500];
 
     strcpy(tpm, nom);
     strcpy(tpm2, nom);
     strcpy(tpm3, nom);
     strcpy(tpm4, nom);
     strcpy(tpm5, nom);
-    strcpy(tpm6, nom);
 
     char* trajet = (char*)malloc((strlen("/ville.txt")+1 )* sizeof(char));
     strcpy(trajet, "/ville.txt");
@@ -234,17 +231,13 @@ t_ville* chargement_info_ville()
     strcpy(trajet3, "/niveau.txt");
     strcat(tpm3, trajet3);
 
-    char* trajet4 = (char*)malloc((strlen("/habitant.txt")+1 )* sizeof(char));
-    strcpy(trajet4, "/habitant.txt");
+    char* trajet4 = (char*)malloc((strlen("/temps.txt")+1 )* sizeof(char));
+    strcpy(trajet4, "/temps.txt");
     strcat(tpm4, trajet4);
 
-    char* trajet5 = (char*)malloc((strlen("/capa_eau.txt")+1 )* sizeof(char));
-    strcpy(trajet5, "/ville.txt");
+    char* trajet5 = (char*)malloc((strlen("/alea.txt")+1 )* sizeof(char));
+    strcpy(trajet5, "/alea.txt");
     strcat(tpm5, trajet5);
-
-    char* trajet6 = (char*)malloc((strlen("/capa_elec.txt")+1 )* sizeof(char));
-    strcpy(trajet6, "/ville.txt");
-    strcat(tpm6, trajet6);
 
     FILE* fichier = NULL;
     fichier = fopen(tpm, "r+");
@@ -259,12 +252,14 @@ t_ville* chargement_info_ville()
 
     fscanf(fichier, "%d\n", &V->argent);
     fscanf(fichier, "%d\n", &V->habitants);
+    printf("test\n");
 
     fscanf(fichier, "%d\n", &V->capa_eau);
     fscanf(fichier, "%d\n", &V->capa_elec);
 
-    fscanf(fichier, "%d\n", &V->nbr_c_eau);
-    fscanf(fichier, "%d\n", &V->nbr_c_elec);
+    printf("test\n");
+    fscanf(fichier, "%d\n", &V->num_chateau);
+    fscanf(fichier, "%d\n", &V->num_centrale);
     fclose(fichier);
 
     FILE* fichier2 = NULL;
@@ -274,7 +269,6 @@ t_ville* chargement_info_ville()
         printf("Erreur d'ouverture du fichier matrice texte\n");
         exit(-1);
     }
-
     int ligne = 80;
     int colonne = 0;
 
@@ -291,13 +285,23 @@ t_ville* chargement_info_ville()
         {
             V->tabcases[i][j].colonne = colonne;
             V->tabcases[i][j].ligne = ligne;
+            V->tabcases[i][j].nbr_hab = 0;
+            V->tabcases[i][j].capa_eau = 0;
+            V->tabcases[i][j].capa_elec = 0;
+            V->tabcases[i][j].besoin_eau = 0;
+            V->tabcases[i][j].niveau = 0;
+            V->tabcases[i][j].num_chateau = 0;
+            V->tabcases[i][j].num_centrale = 0;
+            V->tabcases[i][j].temps_save = 0;
+            V->tabcases[i][j].temps = 0;
+            V->tabcases[i][j].alea = 0;
+            V->tabcases[i][j].ruine = 0;
             colonne = colonne +40;
-            fscanf(fichier2, "%d ", &V->tabcases[i][j].type);
+            fscanf(fichier2, "%d", &V->tabcases[i][j].type);
         }
         ligne = ligne +10;
     }
     fclose(fichier2);
-
 
     FILE* fichier3 = NULL;
     fichier3 = fopen(tpm3, "r+");
@@ -311,7 +315,27 @@ t_ville* chargement_info_ville()
     {
         for(int j=0; j<26; j++)
         {
-            fscanf(fichier3, "%d ", &V->tabcases[i][j].niveau);
+            fscanf(fichier3, "%d", &V->tabcases[i][j].niveau);
+            if(V->tabcases[i][j].niveau == 0)
+            {
+                V->tabcases[i][j].nbr_hab = 0;
+            }
+            if(V->tabcases[i][j].niveau == 1)
+            {
+                V->tabcases[i][j].nbr_hab = 10;
+            }
+            if(V->tabcases[i][j].niveau == 2)
+            {
+                V->tabcases[i][j].nbr_hab = 50;
+            }
+            if(V->tabcases[i][j].niveau == 3)
+            {
+                V->tabcases[i][j].nbr_hab = 100;
+            }
+            if(V->tabcases[i][j].niveau == 4)
+            {
+                V->tabcases[i][j].nbr_hab = 1000;
+            }
         }
     }
     fclose(fichier3);
@@ -328,7 +352,7 @@ t_ville* chargement_info_ville()
     {
         for(int j=0; j<26; j++)
         {
-            fscanf(fichier4,"%d ", &V->tabcases[i][j].nbr_hab);
+            fscanf(fichier4,"%d", &V->tabcases[i][j].temps_save);
         }
     }
     fclose(fichier4);
@@ -345,28 +369,10 @@ t_ville* chargement_info_ville()
     {
         for(int j=0; j<26; j++)
         {
-            fscanf(fichier5, "%d ", &V->tabcases[i][j].capa_eau);
+            fscanf(fichier5, "%d", &V->tabcases[i][j].alea);
         }
     }
     fclose(fichier5);
-
-    FILE* fichier6 = NULL;
-    fichier6 = fopen(tpm6, "r+");
-    if(fichier6 == NULL)
-    {
-        printf("Erreur d'ouverture du fichier capaelec texte\n");
-        exit(-1);
-    }
-
-    for(int i = 0; i<60; i++)
-    {
-        for(int j=0; j<26; j++)
-        {
-            fscanf(fichier6, "%d ", &V->tabcases[i][j].capa_elec);
-        }
-    }
-    fclose(fichier6);
-
 
     return V;
 }

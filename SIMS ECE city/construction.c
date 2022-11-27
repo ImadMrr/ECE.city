@@ -740,7 +740,6 @@ void info_bat(t_cases** tabcases,int clique_x,int clique_y, BITMAP* fond)
         }
         destroy_bitmap(buffer);
     }
-
 }
 
 

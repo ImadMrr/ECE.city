@@ -1,0 +1,46 @@
+# depslib dependency file v1.0
+1669588773 source:c:\users\victo\onedrive\documents\ing 2\informatique\sims city version finale\affichage.c
+	"header.h"
+
+1669545294 c:\users\victo\onedrive\documents\ing 2\informatique\sims city version finale\header.h
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	<sys/stat.h>
+	<limits.h>
+
+1669588773 source:c:\users\victo\onedrive\documents\ing 2\informatique\sims city version finale\construction.c
+	"header.h"
+
+1669568959 source:c:\users\victo\onedrive\documents\ing 2\informatique\sims city version finale\cycle.c
+	"header.h"
+
+1669588773 source:c:\users\victo\onedrive\documents\ing 2\informatique\sims city version finale\distribution.c
+	"header.h"
+
+1669588773 source:c:\users\victo\onedrive\documents\ing 2\informatique\sims city version finale\graphe.c
+	"header.h"
+
+1669588773 source:c:\users\victo\onedrive\documents\ing 2\informatique\sims city version finale\jeu.c
+	"header.h"
+
+1669543969 source:c:\users\victo\onedrive\documents\ing 2\informatique\sims city version finale\main.c
+	"header.h"
+
+1669544592 source:c:\users\victo\onedrive\documents\ing 2\informatique\sims city version finale\initialisation.c
+	"header.h"
+
+1669588773 source:c:\users\victo\onedrive\documents\ing 2\informatique\sims city version finale\menu.c
+	"header.h"
+
+1669588773 source:c:\users\victo\onedrive\documents\ing 2\informatique\sims city version finale\paint.c
+	"header.h"
+
+1669544598 source:c:\users\victo\onedrive\documents\ing 2\informatique\sims city version finale\sauvegarde et chargement.c
+	"header.h"
+
+1669588773 source:c:\users\victo\onedrive\documents\ing 2\informatique\sims city version finale\theorie.c
+	"header.h"
+

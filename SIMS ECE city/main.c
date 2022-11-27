@@ -4,8 +4,8 @@ int main()
 {
     initialisation();
     srand(time(NULL));
-    //musique();
-    //logo();
+    musique();
+    logo();
     menu_principal();
     //maps(0);
     return 0;
